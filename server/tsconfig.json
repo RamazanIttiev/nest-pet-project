@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "module": "commonjs",
@@ -9,37 +10,23 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
+    "outDir": "./dist",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "client": [
-        "src/index.tsx"
-      ],
-      "server": [
-        "src/dist/main.js"
-      ]
-    }
+    "composite": true
   },
-  "references": [
-    {
-      "path": "client"
-    },
-    {
-      "path": "server"
-    }
-  ],
   "include": [
-    "server/src/**/*",
-    "client/src/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
+    "test",
     "dist",
-    "*.d.ts"
+    "**/*spec.ts"
   ]
 }
