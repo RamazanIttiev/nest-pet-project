@@ -33,10 +33,6 @@
       "path": "server"
     }
   ],
-  "include": [
-    "server/src/**/*",
-    "client/src/**/*"
-  ],
   "exclude": [
     "node_modules",
     "dist",

@@ -28,17 +28,7 @@ module.exports = {
 		'@typescript-eslint/restrict-template-expressions': 0,
 		'@typescript-eslint/no-floating-promises': 0,
 		'@typescript-eslint/require-await': 0,
-		'@typescript-eslint/strict-boolean-expressions': [
-			'error',
-			{
-				allowString: true,
-				allowNumber: false,
-				allowNullableObject: true,
-				allowNullableBoolean: true,
-				allowNullableNumber: false,
-				allowAny: false,
-			},
-		],
+		'@typescript-eslint/strict-boolean-expressions': 1,
 		'no-redeclare': 0,
 		'no-restricted-imports': [
 			'error',
