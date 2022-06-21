@@ -1,8 +1,6 @@
-import React from 'react';
-import { SignUpContainer } from '../components/sign-up/sign-up.container';
+import React, { FC } from 'react';
+import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 
-import '../components/sign-up/sign-up-form.css';
-
-export const SignUpPage = () => {
+export const SignUpPage: FC = () => {
 	return <SignUpContainer />;
 };

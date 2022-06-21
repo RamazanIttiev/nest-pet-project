@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { SignUpPage } from '../pages/sign-up.page';
 
-const App = () => {
+export const App: FC = () => {
 	return (
 		<>
 			<SignUpPage />
 		</>
 	);
 };
-
-export default App;

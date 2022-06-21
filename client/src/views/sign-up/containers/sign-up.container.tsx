@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Divider } from 'primereact/divider';
-import { SignUpForm } from './sign-up-form';
+import { SignUpFormComponent } from '../components/sign-up-form.component';
+import { SignUpAsideComponent } from '../components/sign-up-aside.component';
 
 export interface FormValues {
 	name: string;
@@ -47,14 +48,15 @@ export const SignUpContainer: FC = () => {
 	);
 
 	return (
-		<div>
-			<SignUpForm
+		<>
+			<SignUpFormComponent
 				errors={errors}
 				control={control}
 				onSubmit={onSubmit}
 				passwordFooter={passwordFooter}
 				passwordHeader={passwordHeader}
 			/>
-		</div>
+			<SignUpAsideComponent />
+		</>
 	);
 };

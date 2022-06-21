@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './app/app';
+import { App } from './app/app';
 
-import './index.css';
+import './index.scss';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css'; //core css
 import 'primereact/resources/themes/lara-light-indigo/theme.css'; //theme
