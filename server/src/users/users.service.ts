@@ -8,11 +8,6 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { comparePasswords } from '../shared/utils';
 import { CreateUserDto } from './dto/create-user.dto';
 
-export interface User {
-	username: string;
-	password: string;
-}
-
 @Injectable()
 export class UsersService {
 	constructor(
@@ -20,8 +15,8 @@ export class UsersService {
 		private readonly userRepo: Repository<UserEntity>,
 	) {}
 
-	async findUser(options?: object): Promise<UserDto> {
-		const user = await this.userRepo.findOne(options);
+	async findUser(username?: string): Promise<UserDto> {
+		const user = await this.userRepo.findOne({ where: { username } });
 		return toUserDto(user);
 	}
 
@@ -40,12 +35,6 @@ export class UsersService {
 		}
 
 		return toUserDto(user);
-	}
-
-	async findByPayload({ username }: { username: string }): Promise<UserDto> {
-		return await this.findUser({
-			where: { username },
-		});
 	}
 
 	async create(userDto: CreateUserDto): Promise<UserDto> {
