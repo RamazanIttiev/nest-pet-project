@@ -5,6 +5,6 @@ export interface RegistrationStatus {
 
 export interface LoggedUser {
 	username: string;
-	accessToken: any;
-	expiresIn: any;
+	accessToken: string;
+	expiresIn: string;
 }
