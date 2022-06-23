@@ -24,7 +24,7 @@ export class AuthService {
 		};
 		try {
 			await this.usersService.create(userDto);
-		} catch (err) {
+		} catch (err: unknown) {
 			status = {
 				success: false,
 				message: err,

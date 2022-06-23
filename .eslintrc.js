@@ -1,14 +1,16 @@
+const { __esModule } = require('eslint-plugin-import');
+
 module.exports = {
+	root: true,
 	parser: '@typescript-eslint/parser',
-	parserOptions: {
-		project: './tsconfig.json',
-		sourceType: 'module',
-	},
 	plugins: ['@typescript-eslint', 'react', 'react-hooks'],
+	parserOptions: {
+		tsconfigRootDir: __esModule,
+		project: ['./tsconfig.json', './*/tsconfig.json'],
+	},
 	extends: [
-		'plugin:react/recommended',
+		'prettier',
 		'eslint:recommended',
-		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:@typescript-eslint/recommended-requiring-type-checking',
 	],
@@ -28,7 +30,7 @@ module.exports = {
 		'@typescript-eslint/restrict-template-expressions': 0,
 		'@typescript-eslint/no-floating-promises': 0,
 		'@typescript-eslint/require-await': 0,
-		'@typescript-eslint/strict-boolean-expressions': 1,
+		'@typescript-eslint/strict-boolean-expressions': 0,
 		'no-redeclare': 0,
 		'no-restricted-imports': [
 			'error',

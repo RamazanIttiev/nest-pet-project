@@ -1,6 +1,6 @@
 export interface RegistrationStatus {
 	success: boolean;
-	message: string;
+	message: unknown;
 }
 
 export interface LoggedUser {
