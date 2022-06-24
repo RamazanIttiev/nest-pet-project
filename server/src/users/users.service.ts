@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { getPhoneNumber, getUsername, hashPassword } from '../shared/utils';
-import { CreatedUser, NewUser } from './models/users.model';
+import { CreatedUser, ExistingUser, NewUser } from './models/users.model';
 import { getFirestore } from 'firebase-admin/firestore';
 import { firestore } from 'firebase-admin';
 import Timestamp = firestore.Timestamp;
@@ -30,5 +30,12 @@ export class UsersService {
 			createdAt: Timestamp.now(),
 		};
 		return await db.collection('users').doc(`${username}`).set(createdUser);
+	}
+
+	async findUserInDB(user: ExistingUser) {
+		const { phone } = user;
+		const db = getFirestore();
+		
+		return await getPhoneNumber(db, phone);
 	}
 }

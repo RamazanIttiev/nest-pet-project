@@ -1,6 +1,6 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { NewUser } from '../users/models/users.model';
+import { ExistingUser, NewUser, UserToken } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 
 @Controller()
@@ -19,5 +19,13 @@ export class AuthController {
 			throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
 		}
 		return result;
+	}
+
+	/**
+	 * if the user credentials are valid, this route handler returns a signed JWT to the calling app.
+	 */
+	@Post('login')
+	public async login(@Body() user: ExistingUser): Promise<Promise<UserToken>> {
+		return await this.authService.login(user);
 	}
 }

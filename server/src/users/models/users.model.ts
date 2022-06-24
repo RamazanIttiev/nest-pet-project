@@ -13,3 +13,15 @@ export interface CreatedUser {
 	password: string;
 	createdAt: firestore.Timestamp;
 }
+
+export interface ExistingUser {
+	phone: number;
+	password: string;
+	expiresIn: string;
+	accessToken: string;
+}
+
+export interface UserToken {
+	expiresIn: string;
+	accessToken: string;
+}
