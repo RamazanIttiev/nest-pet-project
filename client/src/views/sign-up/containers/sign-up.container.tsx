@@ -6,20 +6,32 @@ import { SignUpAsideComponent } from '../components/sign-up-aside.component';
 
 export interface FormValues {
 	name: string;
-	email: string;
+	phone: string;
 	password: string;
 	accept: boolean;
 }
 
 const defaultValues: FormValues = {
 	name: '',
-	email: '',
+	phone: '',
 	password: '',
 	accept: false,
 };
 
 export const SignUpContainer: FC = () => {
 	const [formData, setFormData] = useState(defaultValues);
+
+	const createProfile = async (phone: string, username: string, password: string) => {
+		const formattedPhoneNumber = Number(phone.replace(/[^+\d]+/g, ''));
+
+		return await fetch('http://localhost:3001/register', {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+			body: JSON.stringify({ phone: formattedPhoneNumber, username, password }),
+		});
+	};
 
 	const {
 		control,
@@ -29,6 +41,12 @@ export const SignUpContainer: FC = () => {
 	} = useForm<FormValues>({ defaultValues: formData });
 
 	const onSubmit = handleSubmit((data: FormValues) => {
+		createProfile(data.phone, data.name, data.password)
+			.then(res => {
+				console.log(res);
+			})
+			.catch(error => alert(error));
+
 		setFormData(data);
 		reset();
 	});

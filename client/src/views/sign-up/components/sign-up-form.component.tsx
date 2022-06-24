@@ -6,6 +6,7 @@ import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { FormValues } from '../containers/sign-up.container';
+import { InputMask } from 'primereact/inputmask';
 
 // TODO: check if the types for useForm values are correct
 interface SignUpFormProps {
@@ -52,28 +53,29 @@ export const SignUpFormComponent: FC<SignUpFormProps> = ({
 					<span className="p-float-label p-input-icon-right">
 						<i className="pi pi-envelope" />
 						<Controller
-							name="email"
+							name="phone"
 							control={control}
 							rules={{
-								required: 'Email is required.',
+								required: 'Phone number is required.',
 								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-									message: 'Invalid email address. E.g. example@email.com',
+									value: /^[+]7*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
+									message: 'Invalid phone number',
 								},
 							}}
 							render={({ field, fieldState }) => (
-								<InputText
+								<InputMask
 									id={field.name}
 									{...field}
+									mask="+7(999) 999-9999"
 									className={classNames({ 'p-invalid': fieldState.error })}
 								/>
 							)}
 						/>
-						<label htmlFor="email" className={classNames({ 'p-error': errors.email })}>
-							Email*
+						<label htmlFor="email" className={classNames({ 'p-error': errors.phone })}>
+							Phone*
 						</label>
 					</span>
-					{errors?.email && <small className="p-error">{errors.email.message}</small>}
+					{errors?.phone && <small className="p-error">{errors.phone.message}</small>}
 				</div>
 				<div className="form-field">
 					<span className="p-float-label">
