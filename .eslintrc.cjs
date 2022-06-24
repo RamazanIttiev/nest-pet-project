@@ -1,11 +1,8 @@
-const { __esModule } = require('eslint-plugin-import');
-
 module.exports = {
 	root: true,
 	parser: '@typescript-eslint/parser',
 	plugins: ['@typescript-eslint', 'react', 'react-hooks'],
 	parserOptions: {
-		tsconfigRootDir: __esModule,
 		project: ['./tsconfig.json', './*/tsconfig.json'],
 	},
 	extends: [
