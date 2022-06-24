@@ -21,20 +21,13 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "noEmit": true,
     "allowJs": true,
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "noEmit": false,
+    "lib": ["es2017", "dom"],
     "paths": {}
   },
   "include": [
-    ".eslintrc.js"
+    ".eslintrc.cjs"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "*.d.ts"
-  ]
+  "exclude": ["node_modules", "dist", "*.d.ts"]
 }
