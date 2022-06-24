@@ -1,48 +1,34 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserDto } from './dto/user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { comparePasswords } from '../shared/utils';
-import { CreateUserDto } from './dto/create-user.dto';
+import { getPhoneNumber, getUsername, hashPassword } from '../shared/utils';
+import { CreatedUser, NewUser } from './models/users.model';
+import { getFirestore } from 'firebase-admin/firestore';
+import { firestore } from 'firebase-admin';
+import Timestamp = firestore.Timestamp;
 
 @Injectable()
 export class UsersService {
-	private userRepo: any;
+	async create(newUser: NewUser) {
+		const db = getFirestore();
+		const { username, password, phone } = newUser;
 
-	async findUser(username?: string): Promise<UserDto> {
-		const user = await this.userRepo.findOne({ where: { username } });
-		return user;
-	}
+		const hashedPassword = await hashPassword(password);
 
-	async findByLogin({ username, password }: LoginUserDto): Promise<UserDto> {
-		const user = await this.userRepo.findOne({ where: { username } });
+		const phoneExists = await getPhoneNumber(db, phone);
+		const usernameExists = await getUsername(db, username);
 
-		if (!user) {
-			throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+		if (phoneExists.empty === false) {
+			throw new HttpException('User with that phone number already exists', HttpStatus.BAD_REQUEST);
+		} else if (usernameExists.empty === false) {
+			throw new HttpException('User with that name already exists', HttpStatus.BAD_REQUEST);
 		}
 
-		// compare passwords
-		const arePasswordsEqual = await comparePasswords(user.password, password);
-
-		if (!arePasswordsEqual) {
-			throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-		}
-
-		return user;
-	}
-
-	async create(userDto: CreateUserDto): Promise<UserDto> {
-		const { username, password, email } = userDto;
-
-		// check if the user exists in the db
-		const userInDb = await this.userRepo.findOne({
-			where: { username },
-		});
-		if (userInDb) {
-			throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
-		}
-
-		const user = await this.userRepo.create({ username, password, email });
-		await this.userRepo.save(user);
-		return user;
+		const createdUser: CreatedUser = {
+			phone,
+			username,
+			password: hashedPassword,
+			id: new Date().getTime(),
+			createdAt: Timestamp.now(),
+		};
+		return await db.collection('users').doc(`${username}`).set(createdUser);
 	}
 }
