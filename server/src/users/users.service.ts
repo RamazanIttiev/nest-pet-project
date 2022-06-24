@@ -35,7 +35,7 @@ export class UsersService {
 	async findUserInDB(user: ExistingUser) {
 		const { phone } = user;
 		const db = getFirestore();
-		
+
 		return await getPhoneNumber(db, phone);
 	}
 }

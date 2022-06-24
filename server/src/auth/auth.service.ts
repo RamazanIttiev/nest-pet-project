@@ -17,13 +17,17 @@ export class AuthService {
 	 */
 	async registerNewUser(newUser: NewUser): Promise<RegistrationStatus> {
 		let status: RegistrationStatus = {
+			status: HttpStatus.CREATED,
 			success: true,
 			message: 'user registered',
 		};
+
 		try {
 			await this.usersService.create(newUser);
 		} catch (err: unknown) {
+			console.log(err);
 			status = {
+				status: HttpStatus.BAD_REQUEST,
 				success: false,
 				message: err,
 			};
