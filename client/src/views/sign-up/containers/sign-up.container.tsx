@@ -1,8 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SignUpFormComponent } from '../components/sign-up-form.component';
-import { SignUpAsideComponent } from '../components/sign-up-aside.component';
-import { Container, Grid } from '@mui/material';
 
 export interface FormValues {
 	name: string;
@@ -49,16 +47,5 @@ export const SignUpContainer: FC = () => {
 		reset();
 	});
 
-	return (
-		<Container maxWidth="lg">
-			<Grid container sx={{ transform: 'translateY(50%)' }} spacing={8}>
-				<Grid item md={6}>
-					<SignUpFormComponent errors={errors} control={control} onSubmit={onSubmit} />
-				</Grid>
-				<Grid item md={6}>
-					<SignUpAsideComponent />
-				</Grid>
-			</Grid>
-		</Container>
-	);
+	return <SignUpFormComponent errors={errors} control={control} onSubmit={onSubmit} />;
 };

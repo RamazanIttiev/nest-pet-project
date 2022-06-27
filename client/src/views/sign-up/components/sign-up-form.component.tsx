@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
 import { FormValues } from '../containers/sign-up.container';
-import { Button, TextField } from '@mui/material';
+import { Button, Paper, TextField, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { ArrowDownward } from '@mui/icons-material';
 
 // TODO: check if the types for useForm values are correct
 interface SignUpFormProps {
@@ -12,8 +14,23 @@ interface SignUpFormProps {
 
 export const SignUpFormComponent: FC<SignUpFormProps> = ({ errors, control, onSubmit }) => {
 	return (
-		<>
-			<h1>Create your account :)</h1>
+		<Paper
+			sx={{
+				p: 8,
+				top: '50%',
+				left: '50%',
+				maxWidth: '500px',
+				position: 'absolute',
+				transform: 'translate(-50%, -50%)',
+			}}>
+			<Typography component="h1" variant="h5" textAlign="center" margin="16px 0">
+				Sign Up
+			</Typography>
+			<Typography component="div" variant="body1" textAlign="center" marginBottom="16px">
+				Already have an account? <Link to="/login">Login here</Link>
+			</Typography>
+
+			<ArrowDownward sx={{ display: 'block', margin: '0 auto' }} />
 			<form onSubmit={onSubmit}>
 				<Controller
 					name="name"
@@ -47,7 +64,6 @@ export const SignUpFormComponent: FC<SignUpFormProps> = ({ errors, control, onSu
 					render={({ field }) => (
 						<TextField
 							{...field}
-							autoFocus
 							fullWidth
 							label="Phone"
 							id={field.name}
@@ -72,7 +88,6 @@ export const SignUpFormComponent: FC<SignUpFormProps> = ({ errors, control, onSu
 					render={({ field }) => (
 						<TextField
 							{...field}
-							autoFocus
 							fullWidth
 							id={field.name}
 							type="password"
@@ -90,6 +105,6 @@ export const SignUpFormComponent: FC<SignUpFormProps> = ({ errors, control, onSu
 					Sign In
 				</Button>
 			</form>
-		</>
+		</Paper>
 	);
 };
