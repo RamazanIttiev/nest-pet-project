@@ -12,6 +12,6 @@ export const getUsername = async (db: FirebaseFirestore.Firestore, username: str
 	return await db.collection('users').where('username', '==', username).get();
 };
 
-export const getPhoneNumber = async (db: FirebaseFirestore.Firestore, phone: number) => {
-	return await db.collection('users').where('phone', '==', phone).get();
+export const getExistingUser = async (db: FirebaseFirestore.Firestore, phone: number) => {
+	return await db.collection('users').doc(`${phone}`).get();
 };

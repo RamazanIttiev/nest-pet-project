@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { getPhoneNumber, getUsername, hashPassword } from '../shared/utils';
-import { CreatedUser, ExistingUser, NewUser } from './models/users.model';
+import { getExistingUser, getUsername, hashPassword } from '../shared/utils';
+import { CreatedUser, NewUser } from './models/users.model';
 import { getFirestore } from 'firebase-admin/firestore';
 import { firestore } from 'firebase-admin';
 import Timestamp = firestore.Timestamp;
@@ -13,10 +13,10 @@ export class UsersService {
 
 		const hashedPassword = await hashPassword(password);
 
-		const phoneExists = await getPhoneNumber(db, phone);
+		const phoneExists = await getExistingUser(db, phone);
 		const usernameExists = await getUsername(db, username);
 
-		if (phoneExists.empty === false) {
+		if (phoneExists.exists) {
 			throw new HttpException('User with that phone number already exists', HttpStatus.BAD_REQUEST);
 		} else if (usernameExists.empty === false) {
 			throw new HttpException('User with that name already exists', HttpStatus.BAD_REQUEST);
@@ -29,13 +29,12 @@ export class UsersService {
 			id: new Date().getTime(),
 			createdAt: Timestamp.now(),
 		};
-		return await db.collection('users').doc(`${username}`).set(createdUser);
+		return await db.collection('users').doc(`${phone}`).set(createdUser);
 	}
 
-	async findUserInDB(user: ExistingUser) {
-		const { phone } = user;
+	async findUserInDB(phone: number) {
 		const db = getFirestore();
 
-		return await getPhoneNumber(db, phone);
+		return await getExistingUser(db, phone);
 	}
 }

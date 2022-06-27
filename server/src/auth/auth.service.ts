@@ -3,6 +3,7 @@ import { UsersService } from '../users/users.service';
 import { ExistingUser, NewUser, UserToken } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
+import { comparePasswords } from '../shared/utils';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,6 @@ export class AuthService {
 		try {
 			await this.usersService.create(newUser);
 		} catch (err: unknown) {
-			console.log(err);
 			status = {
 				status: HttpStatus.BAD_REQUEST,
 				success: false,
@@ -41,18 +41,21 @@ export class AuthService {
 	 * and returns that token
 	 */
 	async login(user: ExistingUser): Promise<UserToken> {
+		const { password, phone } = user;
 		// find user by login in db
-		const userFromDB = await this.usersService.findUserInDB(user);
+		const userFromDB = await this.usersService.findUserInDB(phone);
 
-		if (userFromDB.empty) {
+		if (!userFromDB.exists) {
 			throw new HttpException('Phone number does not exist', HttpStatus.UNAUTHORIZED);
 		}
 
-		let usersPhoneNumber;
-		userFromDB.forEach(user => {
-			usersPhoneNumber = user.data().phone;
-		});
+		const arePasswordsSame = await comparePasswords(userFromDB.data().password, password);
 
+		if (!arePasswordsSame) {
+			throw new HttpException('Your password is incorrect', HttpStatus.UNAUTHORIZED);
+		}
+		
+		const usersPhoneNumber = userFromDB.data().phone;
 		// generate and sign token
 		const token = this.createToken(usersPhoneNumber);
 
