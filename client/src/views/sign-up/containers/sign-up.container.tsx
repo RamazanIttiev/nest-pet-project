@@ -1,21 +1,19 @@
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Divider } from 'primereact/divider';
 import { SignUpFormComponent } from '../components/sign-up-form.component';
 import { SignUpAsideComponent } from '../components/sign-up-aside.component';
+import { Container, Grid } from '@mui/material';
 
 export interface FormValues {
 	name: string;
 	phone: string;
 	password: string;
-	accept: boolean;
 }
 
 const defaultValues: FormValues = {
 	name: '',
 	phone: '',
 	password: '',
-	accept: false,
 };
 
 export const SignUpContainer: FC = () => {
@@ -38,7 +36,7 @@ export const SignUpContainer: FC = () => {
 		handleSubmit,
 		formState: { errors },
 		reset,
-	} = useForm<FormValues>({ defaultValues: formData });
+	} = useForm<FormValues>({ defaultValues: formData, mode: 'onSubmit' });
 
 	const onSubmit = handleSubmit((data: FormValues) => {
 		createProfile(data.phone, data.name, data.password)
@@ -51,30 +49,16 @@ export const SignUpContainer: FC = () => {
 		reset();
 	});
 
-	const passwordHeader = <h6>Pick a password</h6>;
-	const passwordFooter = (
-		<>
-			<Divider />
-			<p className="mt-2">Suggestions</p>
-			<ul className="pl-2 ml-2 mt-0" style={{ lineHeight: '1.5' }}>
-				<li>At least one lowercase</li>
-				<li>At least one uppercase</li>
-				<li>At least one numeric</li>
-				<li>Minimum 8 characters</li>
-			</ul>
-		</>
-	);
-
 	return (
-		<>
-			<SignUpFormComponent
-				errors={errors}
-				control={control}
-				onSubmit={onSubmit}
-				passwordFooter={passwordFooter}
-				passwordHeader={passwordHeader}
-			/>
-			<SignUpAsideComponent />
-		</>
+		<Container maxWidth="lg">
+			<Grid container sx={{ transform: 'translateY(50%)' }} spacing={8}>
+				<Grid item md={6}>
+					<SignUpFormComponent errors={errors} control={control} onSubmit={onSubmit} />
+				</Grid>
+				<Grid item md={6}>
+					<SignUpAsideComponent />
+				</Grid>
+			</Grid>
+		</Container>
 	);
 };
