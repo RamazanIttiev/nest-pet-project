@@ -1,21 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { SignUpFormComponent } from '../components/sign-up-form.component';
 import { FormValues } from '../../../models/form.model';
+import { LoginFormComponent } from '../components/login-form.component';
 
-const defaultValues: FormValues = {
-	name: '',
+const defaultValues: Omit<FormValues, 'name'> = {
 	phone: '',
 	password: '',
 };
 
-export const SignUpContainer: FC = () => {
+export const LoginContainer = () => {
 	const [formData, setFormData] = useState(defaultValues);
 
 	const createProfile = async (phone: string, username: string, password: string) => {
 		const formattedPhoneNumber = Number(phone.replace(/[^+\d]+/g, ''));
 
-		return await fetch('http://localhost:3001/register', {
+		return await fetch('http://localhost:3001/login', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -41,6 +40,5 @@ export const SignUpContainer: FC = () => {
 		setFormData(data);
 		reset();
 	});
-
-	return <SignUpFormComponent errors={errors} control={control} onSubmit={onSubmit} />;
+	return <LoginFormComponent errors={errors} control={control} onSubmit={onSubmit} />;
 };

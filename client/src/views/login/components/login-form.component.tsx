@@ -6,7 +6,7 @@ import { ArrowDownward } from '@mui/icons-material';
 import NumberFormat from 'react-number-format';
 import { ReactHookFormProps } from '../../../models/form.model';
 
-export const SignUpFormComponent: FC<ReactHookFormProps> = ({ errors, control, onSubmit }) => {
+export const LoginFormComponent: FC<ReactHookFormProps> = ({ errors, control, onSubmit }) => {
 	return (
 		<Paper
 			sx={{
@@ -18,33 +18,14 @@ export const SignUpFormComponent: FC<ReactHookFormProps> = ({ errors, control, o
 				transform: 'translate(-50%, -50%)',
 			}}>
 			<Typography component="h1" variant="h5" textAlign="center" margin="16px 0">
-				Sign Up
+				Login
 			</Typography>
 			<Typography component="div" variant="body1" textAlign="center" marginBottom="16px">
-				Already have an account? <Link to="/login">Login here</Link>
+				Don't have an account? <Link to="/register">Sign up here</Link>
 			</Typography>
 
 			<ArrowDownward sx={{ display: 'block', margin: '0 auto' }} />
 			<form onSubmit={onSubmit}>
-				<Controller
-					name="name"
-					control={control}
-					rules={{ required: 'Name is required.' }}
-					render={({ field }) => (
-						<TextField
-							{...field}
-							autoFocus
-							fullWidth
-							label="Name"
-							id={field.name}
-							margin="normal"
-							name={field.name}
-							autoComplete="off"
-							error={!!errors?.name}
-							helperText={errors?.name && errors?.name.message}
-						/>
-					)}
-				/>
 				<Controller
 					name="phone"
 					control={control}
@@ -101,7 +82,7 @@ export const SignUpFormComponent: FC<ReactHookFormProps> = ({ errors, control, o
 				/>
 
 				<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-					Sign In
+					Login
 				</Button>
 			</form>
 		</Paper>
