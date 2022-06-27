@@ -2,17 +2,18 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { CustomButton } from '../../components/button';
+import { useLocation } from 'react-router-dom';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const Header = () => {
+	const location = useLocation();
 	const [isOpened, setMenuOpen] = React.useState<boolean>(false);
 
 	const handleMenuToggle = () => {
@@ -45,9 +46,9 @@ export const Header = () => {
 
 					<Box>
 						<Tooltip title="Open settings">
-							<IconButton onClick={handleMenuToggle} sx={{ p: 0 }}>
-								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-							</IconButton>
+							<CustomButton location={location.pathname} handleMenuToggle={handleMenuToggle}>
+								{location.pathname === '/register' ? 'Login' : 'Sign Up'}
+							</CustomButton>
 						</Tooltip>
 						<Menu
 							sx={{ mt: '45px' }}
