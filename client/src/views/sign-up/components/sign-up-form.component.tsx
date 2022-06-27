@@ -4,6 +4,7 @@ import { FormValues } from '../containers/sign-up.container';
 import { Button, Paper, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ArrowDownward } from '@mui/icons-material';
+import NumberFormat from 'react-number-format';
 
 // TODO: check if the types for useForm values are correct
 interface SignUpFormProps {
@@ -57,20 +58,25 @@ export const SignUpFormComponent: FC<SignUpFormProps> = ({ errors, control, onSu
 					rules={{
 						required: 'Phone number is required.',
 						pattern: {
-							value: /^[+]7*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g,
+							value: /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/g,
 							message: 'Invalid phone number',
 						},
 					}}
 					render={({ field }) => (
-						<TextField
+						<NumberFormat
+							mask=""
 							{...field}
 							fullWidth
+							type="tel"
+							prefix={'+7'}
 							label="Phone"
 							id={field.name}
 							margin="normal"
 							name={field.name}
 							autoComplete="off"
 							error={!!errors?.phone}
+							customInput={TextField}
+							format="+7 ### ### ## ##"
 							helperText={errors?.phone && errors?.phone.message}
 						/>
 					)}
@@ -81,8 +87,8 @@ export const SignUpFormComponent: FC<SignUpFormProps> = ({ errors, control, onSu
 					rules={{
 						required: 'Password is required.',
 						pattern: {
-							value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/i,
-							message: 'Follow password requirements.',
+							value: /^(?=.*[a-zA-Zа-яА-Я]).{8,}$/i,
+							message: 'Password must contain at least 8 symbols',
 						},
 					}}
 					render={({ field }) => (
