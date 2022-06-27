@@ -59,11 +59,7 @@ export const LoginFormComponent: FC<ReactHookFormProps> = ({ errors, control, on
 					name="password"
 					control={control}
 					rules={{
-						required: 'Password is required.',
-						pattern: {
-							value: /^(?=.*[a-zA-Zа-яА-Я]).{8,}$/i,
-							message: 'Password must contain at least 8 symbols',
-						},
+						required: 'Password is invalid.',
 					}}
 					render={({ field }) => (
 						<TextField

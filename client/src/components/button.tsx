@@ -1,25 +1,15 @@
 import React, { FC } from 'react';
-import { Button } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
 
 interface CustomButtonProps {
 	children: React.ReactNode;
-	location: string;
-	handleMenuToggle: () => void;
 }
 
-export const CustomButton: FC<CustomButtonProps> = ({ children, location, handleMenuToggle }) => {
+export const CustomButton: FC<CustomButtonProps> = ({ children }) => {
 	return (
 		<Button>
-			{location === '/' ? (
-				<IconButton onClick={handleMenuToggle} sx={{ p: 0 }}>
-					<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-				</IconButton>
-			) : (
-				<Typography color="#fff">{children}</Typography>
-			)}
+			<Typography color="#fff">{children}</Typography>
 		</Button>
 	);
 };

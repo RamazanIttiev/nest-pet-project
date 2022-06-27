@@ -80,7 +80,7 @@ export const SignUpFormComponent: FC<ReactHookFormProps> = ({ errors, control, o
 					rules={{
 						required: 'Password is required.',
 						pattern: {
-							value: /^(?=.*[a-zA-Zа-яА-Я]).{8,}$/i,
+							value: /^(?=.*[a-zA-Zа-яА-Я0-9]).{8,}$/i,
 							message: 'Password must contain at least 8 symbols',
 						},
 					}}
