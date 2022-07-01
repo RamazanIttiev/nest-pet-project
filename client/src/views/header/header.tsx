@@ -7,12 +7,10 @@ import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import { CustomButton } from '../../components/button';
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { CustomLink } from '../../components/custom-link';
 
 export const Header = () => {
 	const location = useLocation();
@@ -21,6 +19,27 @@ export const Header = () => {
 	const handleMenuToggle = () => {
 		setMenuOpen(!isOpened);
 	};
+
+	const settings = [
+		{
+			title: 'Edit profile',
+			callback: () => {
+				console.log('edit');
+			},
+		},
+		{
+			title: 'Delete account',
+			callback: () => {
+				console.log('delete');
+			},
+		},
+		{
+			title: 'Logout',
+			callback: () => {
+				console.log('logout');
+			},
+		},
+	];
 
 	return (
 		<AppBar position="static">
@@ -46,31 +65,39 @@ export const Header = () => {
 						LOGO
 					</Typography>
 
-					<Box>
-						{location.pathname === '/' ? (
+					<Box sx={{ display: 'flex' }}>
+						{location.pathname === '/profile' ? (
 							<Tooltip title="Open settings">
 								<IconButton onClick={handleMenuToggle} sx={{ p: 0 }}>
 									<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
 								</IconButton>
 							</Tooltip>
+						) : location.pathname === '/' ? (
+							<>
+								<CustomLink
+									styles={{
+										marginRight: '16px',
+									}}
+									location="/login">
+									Login
+								</CustomLink>
+								<CustomLink
+									styles={{
+										marginRight: '16px',
+									}}
+									location="/register">
+									Sign Up
+								</CustomLink>
+							</>
 						) : (
-							<Link
-								style={{ textDecoration: 'none' }}
-								to={location.pathname === '/register' ? '/login' : '/register'}>
-								<CustomButton>{location.pathname === '/register' ? 'Login' : 'Sign Up'}</CustomButton>
-							</Link>
+							<CustomLink location={location.pathname === '/register' ? '/login' : '/register'}>
+								{location.pathname === '/register' ? 'Login' : 'Sign Up'}
+							</CustomLink>
 						)}
-						<Menu
-							sx={{ mt: '45px' }}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							open={isOpened}
-							onClose={handleMenuToggle}>
+						<Menu sx={{ mt: '45px' }} open={isOpened} onClose={handleMenuToggle}>
 							{settings.map(setting => (
-								<MenuItem key={setting} onClick={handleMenuToggle}>
-									<Typography textAlign="center">{setting}</Typography>
+								<MenuItem key={setting.title} onClick={setting.callback}>
+									<Typography textAlign="center">{setting.title}</Typography>
 								</MenuItem>
 							))}
 						</Menu>
