@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
+import { useNavigate } from 'react-router-dom';
 
 const defaultValues: Omit<FormValues, 'name'> = {
 	phone: '',
@@ -9,9 +10,10 @@ const defaultValues: Omit<FormValues, 'name'> = {
 };
 
 export const LoginContainer = () => {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState(defaultValues);
 
-	const createProfile = async (phone: string, username: string, password: string) => {
+	const login = async (phone: string, password: string) => {
 		const formattedPhoneNumber = Number(phone.replace(/[^+\d]+/g, ''));
 
 		return await fetch('http://localhost:3001/login', {
@@ -19,7 +21,8 @@ export const LoginContainer = () => {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			body: JSON.stringify({ phone: formattedPhoneNumber, username, password }),
+			credentials: 'include',
+			body: JSON.stringify({ phone: formattedPhoneNumber, password }),
 		});
 	};
 
@@ -30,10 +33,11 @@ export const LoginContainer = () => {
 		reset,
 	} = useForm<FormValues>({ defaultValues: formData, mode: 'onSubmit' });
 
-	const onSubmit = handleSubmit((data: FormValues) => {
-		createProfile(data.phone, data.name, data.password)
+	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
+		login(data.phone, data.password)
 			.then(res => {
-				console.log(res);
+				console.log(res.headers);
+				return navigate('/welcome');
 			})
 			.catch(error => alert(error));
 
