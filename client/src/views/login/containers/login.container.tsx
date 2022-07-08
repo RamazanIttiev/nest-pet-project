@@ -21,7 +21,6 @@ export const LoginContainer = () => {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-			credentials: 'include',
 			body: JSON.stringify({ phone: formattedPhoneNumber, password }),
 		});
 	};
@@ -36,8 +35,11 @@ export const LoginContainer = () => {
 	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
 		login(data.phone, data.password)
 			.then(res => {
-				console.log(res.headers);
-				return navigate('/welcome');
+				navigate('/profile');
+				return res.json();
+			})
+			.then(data => {
+				return data;
 			})
 			.catch(error => alert(error));
 

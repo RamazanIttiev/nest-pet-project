@@ -4,6 +4,7 @@ import { ExistingUser, NewUser, UserToken } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
 import { comparePasswords } from '../shared/utils';
+import { getFirestore } from 'firebase-admin/firestore';
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
 	 * if yes, then passes phone user's phone number to generate a unique token
 	 * and returns that token
 	 */
-	async login(user: ExistingUser): Promise<UserToken> {
+	async login(user: ExistingUser) {
 		const { password, phone } = user;
 		// find user by login in db
 		const userFromDB = await this.usersService.findUserInDB(phone);
@@ -54,12 +55,14 @@ export class AuthService {
 		if (!arePasswordsSame) {
 			throw new HttpException('Your password is incorrect', HttpStatus.UNAUTHORIZED);
 		}
-		
+
 		const usersPhoneNumber = userFromDB.data().phone;
+		const userReminders = await this.getReminders(usersPhoneNumber);
 		// generate and sign token
 		const token = this.createToken(usersPhoneNumber);
 
 		return {
+			userReminders,
 			...token,
 		};
 	}
@@ -70,5 +73,25 @@ export class AuthService {
 			expiresIn: process.env.EXPIRESIN,
 			accessToken,
 		};
+	}
+
+	async getReminders(phone: string) {
+		const db = getFirestore();
+		const array: object[] = [];
+		await db
+			.collection('users')
+			.doc(`${phone}`)
+			.collection('reminders')
+			.get()
+			.then(res => {
+				res.forEach(data => {
+					const reminder = {
+						title: data.data().title,
+						data: data.data().date,
+					};
+					array.push(reminder);
+				});
+			});
+		return array;
 	}
 }
