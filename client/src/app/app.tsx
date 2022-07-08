@@ -1,21 +1,20 @@
 import React, { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-import { HomePage } from '../pages/home.page';
 import { Header } from '../views/header/header';
-import { LoginPage } from '../pages/login.page';
-import { ProfilePage } from '../pages/profile.page';
-import { SignUpPage } from '../pages/sign-up.page';
+import { HomeContainer } from '../views/home/containers/home.container';
+import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
+import { LoginContainer } from '../views/login/containers/login.container';
+import { ReminderContainer } from '../views/reminder/containers/reminder.container';
 
 export const App: FC = () => {
 	return (
 		<BrowserRouter>
 			<Header />
 			<Routes>
-				<Route index element={<HomePage />} />
-				<Route path="/register" element={<SignUpPage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/profile" element={<ProfilePage />} />
+				<Route index element={<HomeContainer />} />
+				<Route path="/register" element={<SignUpContainer />} />
+				<Route path="/login" element={<LoginContainer />} />
+				<Route path="/reminders" element={<ReminderContainer />} />
 			</Routes>
 		</BrowserRouter>
 	);

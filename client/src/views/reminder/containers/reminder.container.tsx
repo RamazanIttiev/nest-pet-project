@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import { ReminderComponent } from '../components/reminder.component';
 import { useForm } from 'react-hook-form';
 import { DialogState } from '../../../models/dialog.model';
 
-const ReminderContainer: FC = () => {
+export const ReminderContainer: FC = () => {
 	const [dialog, setDialog] = useState({ state: 'edit', opened: false });
 
 	const {
@@ -32,20 +32,20 @@ const ReminderContainer: FC = () => {
 	);
 
 	return (
-		<Grid container spacing={8} justifyContent="center" padding={'64px 0'}>
-			<Grid item md={4} sm={6} xs={11}>
-				<ReminderComponent
-					dialog={dialog}
-					errors={errors}
-					control={control}
-					onSubmit={onSubmit}
-					setValue={setValue}
-					handleOpen={handleOpen}
-					handleClose={handleClose}
-				/>
+		<Container>
+			<Grid container spacing={8} justifyContent="center" padding={'64px 0'}>
+				<Grid item md={4} sm={6} xs={11}>
+					<ReminderComponent
+						dialog={dialog}
+						errors={errors}
+						control={control}
+						onSubmit={onSubmit}
+						setValue={setValue}
+						handleOpen={handleOpen}
+						handleClose={handleClose}
+					/>
+				</Grid>
 			</Grid>
-		</Grid>
+		</Container>
 	);
 };
-
-export default ReminderContainer;
