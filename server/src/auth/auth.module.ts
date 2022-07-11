@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
+import { RemindersService } from '../reminders/reminders.service';
 
 @Module({
 	imports: [
@@ -20,7 +21,7 @@ import { AuthController } from './auth.controller';
 			signOptions: { expiresIn: '30d' },
 		}),
 	],
-	providers: [AuthService, JwtStrategy],
+	providers: [AuthService, RemindersService, JwtStrategy],
 	exports: [PassportModule, JwtModule],
 	controllers: [AuthController],
 })

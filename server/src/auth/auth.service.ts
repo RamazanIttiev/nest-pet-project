@@ -4,14 +4,18 @@ import { ExistingUser, NewUser, UserToken } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
 import { comparePasswords } from '../shared/utils';
-import { getFirestore } from 'firebase-admin/firestore';
+import { RemindersService } from '../reminders/reminders.service';
 
 @Injectable()
 export class AuthService {
 	/**
 	 * JwtService service exposes utilities to help sign a JWT payload.
 	 */
-	constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
+	constructor(
+		private readonly usersService: UsersService,
+		private readonly remindersService: RemindersService,
+		private readonly jwtService: JwtService,
+	) {}
 
 	/**
 	 * This function takes the NewUser (actual user's input data) as an input parameter and delegates the actual user creation to the UsersService.create() function.
@@ -57,7 +61,7 @@ export class AuthService {
 		}
 
 		const usersPhoneNumber = userFromDB.data().phone;
-		const userReminders = await this.getReminders(usersPhoneNumber);
+		const userReminders = await this.remindersService.getReminders(usersPhoneNumber);
 		// generate and sign token
 		const token = this.createToken(usersPhoneNumber);
 
@@ -73,25 +77,5 @@ export class AuthService {
 			expiresIn: process.env.EXPIRESIN,
 			accessToken,
 		};
-	}
-
-	async getReminders(phone: string) {
-		const db = getFirestore();
-		const array: object[] = [];
-		await db
-			.collection('users')
-			.doc(`${phone}`)
-			.collection('reminders')
-			.get()
-			.then(res => {
-				res.forEach(data => {
-					const reminder = {
-						title: data.data().title,
-						data: data.data().date,
-					};
-					array.push(reminder);
-				});
-			});
-		return array;
 	}
 }
