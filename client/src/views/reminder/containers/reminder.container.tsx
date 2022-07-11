@@ -1,11 +1,17 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Container, Grid } from '@mui/material';
 import { ReminderComponent } from '../components/reminder.component';
 import { useForm } from 'react-hook-form';
 import { DialogState } from '../../../models/dialog.model';
+import { Reminders } from '../../../models/reminders.model';
 
-export const ReminderContainer: FC = () => {
+export const ReminderContainer: FC = memo(() => {
+	const [reminders, setReminders] = useState<Reminders[]>([]);
 	const [dialog, setDialog] = useState({ state: 'edit', opened: false });
+
+	useEffect(() => {
+		setReminders(JSON.parse(localStorage.getItem('reminders')));
+	}, []);
 
 	const {
 		control,
@@ -23,6 +29,7 @@ export const ReminderContainer: FC = () => {
 	const handleClose = () => {
 		setDialog({ state: 'edit', opened: false });
 	};
+
 	const handleOpen = useCallback(
 		(openState: DialogState) => () => {
 			console.log(openState.state);
@@ -34,18 +41,17 @@ export const ReminderContainer: FC = () => {
 	return (
 		<Container>
 			<Grid container spacing={8} justifyContent="center" padding={'64px 0'}>
-				<Grid item md={4} sm={6} xs={11}>
-					<ReminderComponent
-						dialog={dialog}
-						errors={errors}
-						control={control}
-						onSubmit={onSubmit}
-						setValue={setValue}
-						handleOpen={handleOpen}
-						handleClose={handleClose}
-					/>
-				</Grid>
+				<ReminderComponent
+					dialog={dialog}
+					errors={errors}
+					control={control}
+					onSubmit={onSubmit}
+					setValue={setValue}
+					reminders={reminders}
+					handleOpen={handleOpen}
+					handleClose={handleClose}
+				/>
 			</Grid>
 		</Container>
 	);
-};
+});

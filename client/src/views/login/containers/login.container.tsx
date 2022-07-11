@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
@@ -9,7 +9,7 @@ const defaultValues: Omit<FormValues, 'name'> = {
 	password: '',
 };
 
-export const LoginContainer = () => {
+export const LoginContainer: FC = () => {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState(defaultValues);
 
@@ -35,11 +35,11 @@ export const LoginContainer = () => {
 	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
 		login(data.phone, data.password)
 			.then(res => {
-				navigate('/profile');
+				navigate('/reminders');
 				return res.json();
 			})
 			.then(data => {
-				return data;
+				localStorage.setItem('reminders', JSON.stringify(data.userReminders));
 			})
 			.catch(error => alert(error));
 
