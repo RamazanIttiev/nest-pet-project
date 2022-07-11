@@ -23,42 +23,47 @@ export const ReminderComponent: FC<ProfileComponentProps> = ({
 	errors,
 	onSubmit,
 }) => {
+	console.log(reminders);
 	return (
 		<>
-			{reminders.map(reminder => {
-				return (
-					<Grid item md={4} sm={6} xs={11}>
-						<Card>
-							<CardActionArea
-								onClick={handleOpen({ state: 'edit', opened: true })}
-								sx={{
-									minHeight: 100,
-									overflow: 'scroll',
-									display: 'flex',
-									alignItems: 'baseline',
-									justifyContent: 'start',
-								}}>
-								<CardContent>
-									<Typography variant="h5" component="h3">
-										{reminder.title}
-									</Typography>
-								</CardContent>
-							</CardActionArea>
-							<CardActions sx={{ justifyContent: 'center' }}>
-								<Button>
-									<Done />
-								</Button>
-								<Button onClick={handleOpen({ state: 'edit', opened: true })}>
-									<Edit />
-								</Button>
-								<Button>
-									<Delete />
-								</Button>
-							</CardActions>
-						</Card>
-					</Grid>
-				);
-			})}
+			{reminders ? (
+				reminders.map(reminder => {
+					return (
+						<Grid key={reminder.title} item md={4} sm={6} xs={11}>
+							<Card>
+								<CardActionArea
+									onClick={handleOpen({ state: 'edit', opened: true })}
+									sx={{
+										minHeight: 100,
+										overflow: 'scroll',
+										display: 'flex',
+										alignItems: 'baseline',
+										justifyContent: 'start',
+									}}>
+									<CardContent>
+										<Typography variant="h5" component="h3">
+											{reminder.title}
+										</Typography>
+									</CardContent>
+								</CardActionArea>
+								<CardActions sx={{ justifyContent: 'center' }}>
+									<Button>
+										<Done />
+									</Button>
+									<Button onClick={handleOpen({ state: 'edit', opened: true })}>
+										<Edit />
+									</Button>
+									<Button>
+										<Delete />
+									</Button>
+								</CardActions>
+							</Card>
+						</Grid>
+					);
+				})
+			) : (
+				<div>No reminders</div>
+			)}
 
 			<EditDialog
 				dialog={dialog}

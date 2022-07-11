@@ -7,7 +7,7 @@ import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import { CustomLink } from '../../components/custom-link';
@@ -15,29 +15,25 @@ import { buttonLabel, buttonPath } from '../../utils/helpers';
 
 export const Header = () => {
 	const location = useLocation();
-	const [isOpened, setMenuOpen] = React.useState<boolean>(false);
+	const navigate = useNavigate();
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
 
-	const handleMenuToggle = () => {
-		setMenuOpen(!isOpened);
+	const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
 	};
 
 	const settings = [
 		{
-			title: 'Edit profile',
+			title: 'Log Out',
 			callback: () => {
-				console.log('edit');
-			},
-		},
-		{
-			title: 'Delete account',
-			callback: () => {
-				console.log('delete');
-			},
-		},
-		{
-			title: 'Logout',
-			callback: () => {
-				console.log('logout');
+				localStorage.removeItem('reminders');
+				setAnchorEl(null);
+				navigate('/');
 			},
 		},
 	];
@@ -69,7 +65,12 @@ export const Header = () => {
 					<Box sx={{ display: 'flex' }}>
 						{location.pathname === '/reminders' ? (
 							<Tooltip title="Open settings">
-								<IconButton onClick={handleMenuToggle} sx={{ p: 0 }}>
+								<IconButton
+									aria-controls={open ? 'basic-menu' : undefined}
+									aria-haspopup="true"
+									aria-expanded={open ? 'true' : undefined}
+									onClick={handleMenuOpen}
+									sx={{ p: 0 }}>
 									<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
 								</IconButton>
 							</Tooltip>
@@ -95,7 +96,19 @@ export const Header = () => {
 								{buttonLabel(location.pathname)}
 							</CustomLink>
 						)}
-						<Menu sx={{ mt: '45px' }} open={isOpened} onClose={handleMenuToggle}>
+						<Menu
+							sx={{ mt: '45px' }}
+							open={open}
+							onClose={handleClose}
+							anchorEl={anchorEl}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'center',
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'center',
+							}}>
 							{settings.map(setting => (
 								<MenuItem key={setting.title} onClick={setting.callback}>
 									<Typography textAlign="center">{setting.title}</Typography>

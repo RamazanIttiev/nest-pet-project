@@ -3,13 +3,18 @@ import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
 import { useNavigate } from 'react-router-dom';
+import { Reminders } from '../../../models/reminders.model';
 
 const defaultValues: Omit<FormValues, 'name'> = {
 	phone: '',
 	password: '',
 };
 
-export const LoginContainer: FC = () => {
+interface LoginContainerProps {
+	handleReminders: (data: Reminders[]) => void;
+}
+
+export const LoginContainer: FC<LoginContainerProps> = ({ handleReminders }) => {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState(defaultValues);
 
@@ -39,7 +44,7 @@ export const LoginContainer: FC = () => {
 				return res.json();
 			})
 			.then(data => {
-				localStorage.setItem('reminders', JSON.stringify(data.userReminders));
+				handleReminders(data.userReminders);
 			})
 			.catch(error => alert(error));
 

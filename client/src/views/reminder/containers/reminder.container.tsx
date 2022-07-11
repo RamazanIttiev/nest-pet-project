@@ -1,17 +1,16 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { Container, Grid } from '@mui/material';
 import { ReminderComponent } from '../components/reminder.component';
 import { useForm } from 'react-hook-form';
 import { DialogState } from '../../../models/dialog.model';
 import { Reminders } from '../../../models/reminders.model';
 
-export const ReminderContainer: FC = memo(() => {
-	const [reminders, setReminders] = useState<Reminders[]>([]);
-	const [dialog, setDialog] = useState({ state: 'edit', opened: false });
+interface RemindersContainerProps {
+	reminders: Reminders[];
+}
 
-	useEffect(() => {
-		setReminders(JSON.parse(localStorage.getItem('reminders')));
-	}, []);
+export const ReminderContainer: FC<RemindersContainerProps> = memo(({ reminders }) => {
+	const [dialog, setDialog] = useState({ state: 'edit', opened: false });
 
 	const {
 		control,
@@ -29,7 +28,6 @@ export const ReminderContainer: FC = memo(() => {
 	const handleClose = () => {
 		setDialog({ state: 'edit', opened: false });
 	};
-
 	const handleOpen = useCallback(
 		(openState: DialogState) => () => {
 			console.log(openState.state);
