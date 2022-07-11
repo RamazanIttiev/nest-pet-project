@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import { CustomLink } from '../../components/custom-link';
+import { buttonLabel, buttonPath } from '../../utils/helpers';
 
 export const Header = () => {
 	const location = useLocation();
@@ -66,7 +67,7 @@ export const Header = () => {
 					</Typography>
 
 					<Box sx={{ display: 'flex' }}>
-						{location.pathname === '/profile' ? (
+						{location.pathname === '/reminders' ? (
 							<Tooltip title="Open settings">
 								<IconButton onClick={handleMenuToggle} sx={{ p: 0 }}>
 									<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -90,8 +91,8 @@ export const Header = () => {
 								</CustomLink>
 							</>
 						) : (
-							<CustomLink location={location.pathname === '/register' ? '/login' : '/register'}>
-								{location.pathname === '/register' ? 'Login' : 'Sign Up'}
+							<CustomLink location={buttonPath(buttonLabel(location.pathname))}>
+								{buttonLabel(location.pathname)}
 							</CustomLink>
 						)}
 						<Menu sx={{ mt: '45px' }} open={isOpened} onClose={handleMenuToggle}>
