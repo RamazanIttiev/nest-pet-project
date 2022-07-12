@@ -4,16 +4,16 @@ import { Delete, Done, Edit } from '@mui/icons-material';
 import { EditDialog } from '../../../components/edit-dialog';
 import { EditFormProps } from '../../../models/form.model';
 import { DialogState } from '../../../models/dialog.model';
-import { Reminders } from '../../../models/reminders.model';
+import { Reminder } from '../../../models/profile.model';
 
 interface ProfileComponentProps extends EditFormProps {
 	dialog: DialogState;
-	reminders: Reminders[];
+	reminders: Reminder[];
 	handleClose: () => void;
 	handleOpen: (openState: DialogState) => () => void;
 }
 
-export const ReminderComponent: FC<ProfileComponentProps> = ({
+export const ProfileComponent: FC<ProfileComponentProps> = ({
 	dialog,
 	handleOpen,
 	handleClose,

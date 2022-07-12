@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
 import { useNavigate } from 'react-router-dom';
-import { Reminders } from '../../../models/reminders.model';
+import { Reminder } from '../../../models/profile.model';
 
 const defaultValues: Omit<FormValues, 'name'> = {
 	phone: '',
@@ -11,7 +11,7 @@ const defaultValues: Omit<FormValues, 'name'> = {
 };
 
 interface LoginContainerProps {
-	handleReminders: (data: Reminders[]) => void;
+	handleReminders: (data: Reminder[]) => void;
 }
 
 export const LoginContainer: FC<LoginContainerProps> = ({ handleReminders }) => {
@@ -40,7 +40,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleReminders }) => 
 	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
 		login(data.phone, data.password)
 			.then(res => {
-				// navigate('/reminders');
+				navigate('/profile');
 				return res.json();
 			})
 			.then(data => {

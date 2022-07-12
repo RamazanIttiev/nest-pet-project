@@ -6,7 +6,7 @@ export const buttonLabel = (label: string) => {
 		case '/login': {
 			return 'Sign Up';
 		}
-		case '/reminders': {
+		case '/profile': {
 			return 'Log Out';
 		}
 		default: {

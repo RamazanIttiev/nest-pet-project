@@ -63,7 +63,7 @@ export const Header = () => {
 					</Typography>
 
 					<Box sx={{ display: 'flex' }}>
-						{location.pathname === '/reminders' ? (
+						{location.pathname === '/profile' ? (
 							<Tooltip title="Open settings">
 								<IconButton
 									aria-controls={open ? 'basic-menu' : undefined}

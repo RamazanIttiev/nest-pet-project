@@ -1,4 +1,4 @@
-export interface Reminders {
+export interface Reminder {
 	title: string;
 	date: Date;
 }

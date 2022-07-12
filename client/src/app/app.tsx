@@ -4,14 +4,14 @@ import { Header } from '../views/header/header';
 import { HomeContainer } from '../views/home/containers/home.container';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
-import { ReminderContainer } from '../views/reminder/containers/reminder.container';
-import { Reminders } from '../models/reminders.model';
+import { ProfileContainer } from '../views/profile/containers/profile.container';
+import { Reminder } from '../models/profile.model';
 
 export const App: FC = () => {
-	const [reminders, setReminders] = useState<Reminders[]>([]);
+	const [reminders, setReminders] = useState<Reminder[]>([]);
 
-	const handleReminders = useCallback((data: Reminders[]) => {
-		localStorage.setItem('reminders', JSON.stringify(data));
+	const handleReminders = useCallback((data: Reminder[]) => {
+		localStorage.setItem('profileData', JSON.stringify(data));
 	}, []);
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ export const App: FC = () => {
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer />} />
 				<Route path="/login" element={<LoginContainer handleReminders={handleReminders} />} />
-				<Route path="/reminders" element={<ReminderContainer reminders={reminders} />} />
+				<Route path="/profile" element={<ProfileContainer reminders={reminders} />} />
 			</Routes>
 		</BrowserRouter>
 	);
