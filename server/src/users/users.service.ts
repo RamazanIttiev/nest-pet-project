@@ -32,7 +32,7 @@ export class UsersService {
 		return await db.collection('users').doc(`${phone}`).set(createdUser);
 	}
 
-	async findUserInDB(phone: number) {
+	async findUserInDB(phone: string) {
 		const db = getFirestore();
 
 		return await getExistingUser(db, phone);

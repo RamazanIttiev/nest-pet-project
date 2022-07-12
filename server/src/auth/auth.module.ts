@@ -7,22 +7,19 @@ import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import { RemindersService } from '../reminders/reminders.service';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
 	imports: [
 		UsersModule,
-		PassportModule.register({
-			defaultStrategy: 'jwt',
-			property: 'user',
-			session: false,
-		}),
+		PassportModule,
 		JwtModule.register({
-			secret: `${process.env.JWT_SECRET}`,
+			secret: 'secret',
 			signOptions: { expiresIn: '30d' },
 		}),
 	],
-	providers: [AuthService, RemindersService, JwtStrategy],
-	exports: [PassportModule, JwtModule],
 	controllers: [AuthController],
+	exports: [AuthService],
+	providers: [AuthService, RemindersService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

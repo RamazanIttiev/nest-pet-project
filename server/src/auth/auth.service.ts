@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { ExistingUser, NewUser, UserToken } from '../users/models/users.model';
+import { NewUser, UserWithData } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
-import { comparePasswords } from '../shared/utils';
 import { RemindersService } from '../reminders/reminders.service';
+import { comparePasswords } from '../shared/utils';
 
 @Injectable()
 export class AuthService {
@@ -41,41 +41,40 @@ export class AuthService {
 	}
 
 	/**
-	 * This function checks if the user exists in database
-	 * if yes, then passes phone user's phone number to generate a unique token
-	 * and returns that token
+	 * This function accepts valid user
+	 * and generates accessToken that contains payload object
 	 */
-	async login(user: ExistingUser) {
-		const { password, phone } = user;
-		// find user by login in db
+	async login(user: UserWithData) {
+		const payload = { phone: user.phone, username: user.username, reminders: user.reminders };
+
+		const accessToken = this.jwtService.sign(payload);
+
+		return {
+			accessToken,
+		};
+	}
+
+	async validateUser(phone: string, pass: string): Promise<UserWithData> {
 		const userFromDB = await this.usersService.findUserInDB(phone);
 
 		if (!userFromDB.exists) {
 			throw new HttpException('Phone number does not exist', HttpStatus.UNAUTHORIZED);
 		}
 
-		const arePasswordsSame = await comparePasswords(userFromDB.data().password, password);
+		const arePasswordsSame = await comparePasswords(userFromDB.data().password, pass);
 
 		if (!arePasswordsSame) {
 			throw new HttpException('Your password is incorrect', HttpStatus.UNAUTHORIZED);
 		}
 
-		const usersPhoneNumber = userFromDB.data().phone;
-		const userReminders = await this.remindersService.getReminders(usersPhoneNumber);
-		// generate and sign token
-		const token = this.createToken(usersPhoneNumber);
+		const reminders = await this.remindersService.getReminders(userFromDB.data().phone);
 
 		return {
-			userReminders,
-			...token,
-		};
-	}
-
-	private createToken(phone: number): UserToken {
-		const accessToken = this.jwtService.sign({ phone });
-		return {
-			expiresIn: process.env.EXPIRESIN,
-			accessToken,
+			id: userFromDB.data().id,
+			phone: userFromDB.data().phone,
+			username: userFromDB.data().username,
+			createdAt: userFromDB.data().createdAt,
+			reminders,
 		};
 	}
 }

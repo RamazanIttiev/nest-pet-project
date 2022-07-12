@@ -1,7 +1,8 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ExistingUser, NewUser, UserToken } from '../users/models/users.model';
+import { NewUser, UserWithData } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AuthController {
@@ -22,10 +23,25 @@ export class AuthController {
 	}
 
 	/**
-	 * if the user credentials are valid, this route handler returns a signed JWT to the calling app.
+	 * if the user credentials are valid,
+	 * this route handler returns a signed JWT and user's data to the calling app.
+	 *
+	 * AuthGuard('local') refers to local.strategy.ts, which validates user
+	 * and returns accessToken that contains all necessary data (profile data and reminders)
 	 */
+	@UseGuards(AuthGuard('local'))
 	@Post('login')
-	public async login(@Body() user: ExistingUser): Promise<Promise<UserToken>> {
+	public async login(@Request() { user }: { user: UserWithData }): Promise<{ accessToken: string }> {
 		return await this.authService.login(user);
+	}
+
+	/**
+	 * if accessToken is valid,
+	 * AuthGuard('jwt') returns all user data that is contained in that token
+	 */
+	@UseGuards(AuthGuard('jwt'))
+	@Get('profile')
+	getReminders(@Request() { user }: { user: UserWithData }): UserWithData {
+		return user;
 	}
 }

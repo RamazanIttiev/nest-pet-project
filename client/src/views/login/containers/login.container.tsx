@@ -40,7 +40,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleReminders }) => 
 	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
 		login(data.phone, data.password)
 			.then(res => {
-				navigate('/reminders');
+				// navigate('/reminders');
 				return res.json();
 			})
 			.then(data => {
