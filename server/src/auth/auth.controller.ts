@@ -1,8 +1,20 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Get,
+	HttpException,
+	HttpStatus,
+	Logger,
+	Post,
+	Request,
+	Res,
+	UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { NewUser, UserWithData } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
 
 @Controller()
 export class AuthController {
@@ -31,8 +43,22 @@ export class AuthController {
 	 */
 	@UseGuards(AuthGuard('local'))
 	@Post('login')
-	public async login(@Request() { user }: { user: UserWithData }): Promise<{ accessToken: string }> {
-		return await this.authService.login(user);
+	public async login(
+		@Request() { user }: { user: UserWithData },
+		@Res({ passthrough: true }) response: Response,
+	): Promise<string> {
+		const accessToken = await this.authService.login(user);
+
+		response.cookie(
+			'accessToken',
+			{ accessToken },
+			{
+				httpOnly: true,
+				domain: process.env.FRONTEND_DOMAIN,
+			},
+		);
+
+		return accessToken;
 	}
 
 	/**
@@ -41,7 +67,9 @@ export class AuthController {
 	 */
 	@UseGuards(AuthGuard('jwt'))
 	@Get('profile')
-	getReminders(@Request() { user }: { user: UserWithData }): UserWithData {
-		return user;
+	getReminders(@Request() request: any): UserWithData {
+		Logger.log(process.env.JWT_SECRET);
+
+		return request.user;
 	}
 }

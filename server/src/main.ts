@@ -1,5 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
 import { cert, initializeApp } from 'firebase-admin/app';
 
 import * as serviceAccount from '../firebase-adminsdk.json';
@@ -7,9 +8,11 @@ import * as serviceAccount from '../firebase-adminsdk.json';
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.enableCors({
-		origin: 'http://localhost:3000',
+		origin: process.env.FRONTEND_URL,
 		credentials: true,
 	});
+	app.use(cookieParser());
+
 	await app.listen(3001);
 }
 
