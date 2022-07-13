@@ -1,8 +1,8 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Container, Grid } from '@mui/material';
-import { ProfileComponent } from '../components/profile.component';
 import { useForm } from 'react-hook-form';
 import { DialogState } from '../../../models/dialog.model';
+import { ProfileComponent } from '../components/profile.component';
 import { Reminder } from '../../../models/profile.model';
 
 interface RemindersContainerProps {

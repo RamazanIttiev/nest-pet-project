@@ -23,7 +23,6 @@ export const ProfileComponent: FC<ProfileComponentProps> = ({
 	errors,
 	onSubmit,
 }) => {
-	console.log(reminders);
 	return (
 		<>
 			{reminders ? (

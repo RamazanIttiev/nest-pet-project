@@ -1,31 +1,39 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Header } from '../views/header/header';
 import { HomeContainer } from '../views/home/containers/home.container';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
 import { ProfileContainer } from '../views/profile/containers/profile.container';
-import { Reminder } from '../models/profile.model';
+import { ProfileData } from '../models/profile.model';
 
 export const App: FC = () => {
-	const [reminders, setReminders] = useState<Reminder[]>([]);
-
-	const handleReminders = useCallback((data: Reminder[]) => {
-		localStorage.setItem('profileData', JSON.stringify(data));
-	}, []);
+	const [profileData, setProfileData] = useState<ProfileData>({ phone: '', username: '', reminders: [] });
 
 	useEffect(() => {
-		setReminders(JSON.parse(localStorage.getItem('reminders')));
+		fetch('http://localhost:3001/profile', {
+			method: 'GET',
+			credentials: 'include',
+		})
+			.then(response => {
+				return response.json();
+			})
+			.then(profileData => {
+				return setProfileData(profileData);
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	}, []);
-
+	console.log(profileData.reminders);
 	return (
 		<BrowserRouter>
 			<Header />
 			<Routes>
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer />} />
-				<Route path="/login" element={<LoginContainer handleReminders={handleReminders} />} />
-				<Route path="/profile" element={<ProfileContainer reminders={reminders} />} />
+				<Route path="/login" element={<LoginContainer />} />
+				<Route path="/profile" element={<ProfileContainer reminders={profileData.reminders} />} />
 			</Routes>
 		</BrowserRouter>
 	);
