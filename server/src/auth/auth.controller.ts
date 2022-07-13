@@ -1,15 +1,4 @@
-import {
-	Body,
-	Controller,
-	Get,
-	HttpException,
-	HttpStatus,
-	Logger,
-	Post,
-	Request,
-	Res,
-	UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { NewUser, UserWithData } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
@@ -68,8 +57,6 @@ export class AuthController {
 	@UseGuards(AuthGuard('jwt'))
 	@Get('profile')
 	getReminders(@Request() request: any): UserWithData {
-		Logger.log(process.env.JWT_SECRET);
-
 		return request.user;
 	}
 }
