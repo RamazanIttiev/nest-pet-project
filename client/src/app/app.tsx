@@ -29,9 +29,12 @@ export const App: FC = () => {
 		}
 	}, [location.pathname]);
 
+	const handleClearData = () => {
+		setProfileData({ phone: '', username: '', reminders: [] });
+	};
 	return (
 		<>
-			<Header />
+			<Header handleClearData={handleClearData} />
 			<Routes>
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer />} />

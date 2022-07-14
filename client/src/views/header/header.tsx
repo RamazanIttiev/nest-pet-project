@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import { CustomLink } from '../../components/custom-link';
 import { buttonLabel, buttonPath } from '../../utils/helpers';
 
-export const Header = () => {
+export const Header: FC<{ handleClearData: () => void }> = ({ handleClearData }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -27,14 +28,21 @@ export const Header = () => {
 		setAnchorEl(null);
 	};
 
+	const handleLogout = async () => {
+		handleClearData();
+		setAnchorEl(null);
+
+		await fetch('http://localhost:3001/logout', {
+			method: 'GET',
+			credentials: 'include',
+		});
+		navigate('/');
+	};
+
 	const settings = [
 		{
 			title: 'Log Out',
-			callback: () => {
-				localStorage.removeItem('reminders');
-				setAnchorEl(null);
-				navigate('/');
-			},
+			callback: handleLogout,
 		},
 	];
 
