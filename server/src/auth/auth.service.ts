@@ -5,6 +5,7 @@ import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
 import { RemindersService } from '../reminders/reminders.service';
 import { comparePasswords } from '../shared/utils';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
 		private readonly usersService: UsersService,
 		private readonly remindersService: RemindersService,
 		private readonly jwtService: JwtService,
+		private readonly configService: ConfigService,
 	) {}
 
 	/**
@@ -47,7 +49,7 @@ export class AuthService {
 	async login(user: UserWithData) {
 		const payload = { phone: user.phone, username: user.username, reminders: user.reminders };
 
-		return this.jwtService.sign(payload);
+		return this.jwtService.sign(payload, { expiresIn: this.configService.get<string>('EXPIRE_IN') });
 	}
 
 	async validateUser(phone: string, pass: string): Promise<UserWithData> {

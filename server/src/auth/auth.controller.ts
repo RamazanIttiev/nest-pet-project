@@ -50,6 +50,16 @@ export class AuthController {
 		return accessToken;
 	}
 
+	@Get('logout')
+	public async logout(@Request() req: any, @Res({ passthrough: true }) response: Response) {
+		response.clearCookie('accessToken', {
+			httpOnly: true,
+			domain: process.env.FRONTEND_DOMAIN,
+		});
+
+		return response.get('Set-Cookie');
+	}
+
 	/**
 	 * if accessToken is valid,
 	 * AuthGuard('jwt') returns all user data that is contained in that token
