@@ -36,6 +36,7 @@ export const LoginContainer: FC = () => {
 	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
 		login(data.phone, data.password)
 			.then(response => {
+				localStorage.setItem('isAuthenticated', 'true');
 				if (response.ok) navigate('/profile');
 			})
 			.catch(error => alert(error));

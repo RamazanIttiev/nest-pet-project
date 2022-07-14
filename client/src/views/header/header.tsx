@@ -21,7 +21,7 @@ interface HeaderProps {
 export const Header: FC<HeaderProps> = ({ clearProfile }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	
+
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 
@@ -37,6 +37,8 @@ export const Header: FC<HeaderProps> = ({ clearProfile }) => {
 		clearProfile();
 		setAnchorEl(null);
 
+		localStorage.removeItem('isAuthenticated');
+		
 		await fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
 			method: 'GET',
 			credentials: 'include',

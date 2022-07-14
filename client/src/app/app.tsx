@@ -6,9 +6,11 @@ import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
 import { ProfileContainer } from '../views/profile/containers/profile.container';
 import { ProfileData } from '../models/profile.model';
+import { RequireAuth } from '../utils/utils';
 
 export const App: FC = () => {
 	const location = useLocation();
+
 	const [profileData, setProfileData] = useState<ProfileData>({ phone: '', username: '', reminders: [] });
 
 	useEffect(() => {
@@ -43,7 +45,14 @@ export const App: FC = () => {
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer />} />
 				<Route path="/login" element={<LoginContainer />} />
-				<Route path="/profile" element={<ProfileContainer reminders={profileData.reminders} />} />
+				<Route
+					path="/profile"
+					element={
+						<RequireAuth>
+							<ProfileContainer reminders={profileData.reminders} />
+						</RequireAuth>
+					}
+				/>
 			</Routes>
 		</>
 	);
