@@ -15,7 +15,7 @@ export const SignUpContainer: FC = () => {
 	const createProfile = async (phone: string, username: string, password: string) => {
 		const formattedPhoneNumber = Number(phone.replace(/[^+\d]+/g, ''));
 
-		return await fetch('http://localhost:3001/register', {
+		return await fetch(`${process.env.REACT_APP_SERVER_URL}/register`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

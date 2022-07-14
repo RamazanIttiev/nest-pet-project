@@ -16,7 +16,7 @@ export const LoginContainer: FC = () => {
 	const login = async (phone: string, password: string) => {
 		const formattedPhoneNumber = Number(phone.replace(/[^+\d]+/g, ''));
 
-		return await fetch('http://localhost:3001/login', {
+		return await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

@@ -14,9 +14,14 @@ import IconButton from '@mui/material/IconButton';
 import { CustomLink } from '../../components/custom-link';
 import { buttonLabel, buttonPath } from '../../utils/helpers';
 
-export const Header: FC<{ handleClearData: () => void }> = ({ handleClearData }) => {
+interface HeaderProps {
+	clearProfile: () => void;
+}
+
+export const Header: FC<HeaderProps> = ({ clearProfile }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
+	
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 
@@ -29,10 +34,10 @@ export const Header: FC<{ handleClearData: () => void }> = ({ handleClearData })
 	};
 
 	const handleLogout = async () => {
-		handleClearData();
+		clearProfile();
 		setAnchorEl(null);
 
-		await fetch('http://localhost:3001/logout', {
+		await fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
 			method: 'GET',
 			credentials: 'include',
 		});

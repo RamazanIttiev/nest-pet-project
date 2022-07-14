@@ -13,12 +13,15 @@ export const App: FC = () => {
 
 	useEffect(() => {
 		if (location.pathname === '/profile') {
-			fetch('http://localhost:3001/profile', {
+			fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
 				method: 'GET',
 				credentials: 'include',
 			})
 				.then(response => {
-					return response.json();
+					if (response.ok) {
+						return response.json();
+					}
+					throw new Error('Something went wrong');
 				})
 				.then(profileData => {
 					return setProfileData(profileData);
@@ -29,12 +32,13 @@ export const App: FC = () => {
 		}
 	}, [location.pathname]);
 
-	const handleClearData = () => {
+	const clearProfile = () => {
 		setProfileData({ phone: '', username: '', reminders: [] });
 	};
+
 	return (
 		<>
-			<Header handleClearData={handleClearData} />
+			<Header clearProfile={clearProfile} />
 			<Routes>
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer />} />
