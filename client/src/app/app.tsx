@@ -40,7 +40,7 @@ export const App: FC = () => {
 
 	return (
 		<>
-			<Header clearProfile={clearProfile} />
+			<Header clearProfile={clearProfile} username={profileData.username} />
 			<Routes>
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer />} />

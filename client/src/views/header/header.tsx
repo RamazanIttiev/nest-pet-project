@@ -10,15 +10,18 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
 import { CustomLink } from '../../components/custom-link';
 import { buttonLabel, buttonPath } from '../../utils/helpers';
 
+import AvatarIcon from '../../assets/avatar.svg';
+import { Button } from '@mui/material';
+
 interface HeaderProps {
+	username: string;
 	clearProfile: () => void;
 }
 
-export const Header: FC<HeaderProps> = ({ clearProfile }) => {
+export const Header: FC<HeaderProps> = ({ username, clearProfile }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -38,7 +41,7 @@ export const Header: FC<HeaderProps> = ({ clearProfile }) => {
 		setAnchorEl(null);
 
 		localStorage.removeItem('isAuthenticated');
-		
+
 		await fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
 			method: 'GET',
 			credentials: 'include',
@@ -77,17 +80,22 @@ export const Header: FC<HeaderProps> = ({ clearProfile }) => {
 						LOGO
 					</Typography>
 
-					<Box sx={{ display: 'flex' }}>
+					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						{location.pathname === '/profile' ? (
 							<Tooltip title="Open settings">
-								<IconButton
-									aria-controls={open ? 'basic-menu' : undefined}
+								<Button
 									aria-haspopup="true"
-									aria-expanded={open ? 'true' : undefined}
 									onClick={handleMenuOpen}
+									aria-expanded={open ? 'true' : undefined}
+									aria-controls={open ? 'basic-menu' : undefined}
 									sx={{ p: 0 }}>
-									<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-								</IconButton>
+									<>
+										<Typography color={'#fff'} mr={1}>
+											{username}
+										</Typography>
+										<Avatar sx={{ border: '1px solid #fff' }} alt={username} src={AvatarIcon} />
+									</>
+								</Button>
 							</Tooltip>
 						) : location.pathname === '/' ? (
 							<>
