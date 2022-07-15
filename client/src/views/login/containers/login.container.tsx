@@ -3,18 +3,22 @@ import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
 import { useNavigate } from 'react-router-dom';
+import { formatPhoneNumber } from '../../../utils/helpers';
 
 const defaultValues: Omit<FormValues, 'name'> = {
 	phone: '',
 	password: '',
 };
 
-export const LoginContainer: FC = () => {
+interface LoginContainerProps {}
+
+export const LoginContainer: FC<LoginContainerProps> = () => {
 	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState(false);
 	const [formData, setFormData] = useState(defaultValues);
 
 	const login = async (phone: string, password: string) => {
-		const formattedPhoneNumber = Number(phone.replace(/[^+\d]+/g, ''));
+		setIsLoading(true);
 
 		return await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
 			headers: {
@@ -22,7 +26,7 @@ export const LoginContainer: FC = () => {
 			},
 			method: 'POST',
 			credentials: 'include',
-			body: JSON.stringify({ phone: formattedPhoneNumber, password }),
+			body: JSON.stringify({ phone: formatPhoneNumber(phone), password }),
 		});
 	};
 
@@ -37,12 +41,17 @@ export const LoginContainer: FC = () => {
 		login(data.phone, data.password)
 			.then(response => {
 				localStorage.setItem('isAuthenticated', 'true');
-				if (response.ok) navigate('/profile');
+				if (response.ok) {
+					navigate('/profile');
+					setIsLoading(false);
+				} else {
+					console.log(response);
+				}
 			})
 			.catch(error => alert(error));
 
 		setFormData(data);
 		reset();
 	});
-	return <LoginFormComponent errors={errors} control={control} onSubmit={onSubmit} />;
+	return <LoginFormComponent isLoading={isLoading} errors={errors} control={control} onSubmit={onSubmit} />;
 };

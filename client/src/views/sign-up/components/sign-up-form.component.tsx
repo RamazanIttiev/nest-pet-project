@@ -1,12 +1,17 @@
 import React, { FC } from 'react';
 import { Controller } from 'react-hook-form';
-import { Button, Paper, TextField, Typography } from '@mui/material';
+import { Paper, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { ArrowDownward } from '@mui/icons-material';
 import NumberFormat from 'react-number-format';
 import { ReactHookFormProps } from '../../../models/form.model';
+import CustomButton from '../../../components/custom-button';
 
-export const SignUpFormComponent: FC<ReactHookFormProps> = ({ errors, control, onSubmit }) => {
+interface SignUpFormComponentProps extends ReactHookFormProps {
+	isLoading: boolean;
+}
+
+export const SignUpFormComponent: FC<SignUpFormComponentProps> = ({ isLoading, errors, control, onSubmit }) => {
 	return (
 		<Paper
 			sx={{
@@ -100,9 +105,9 @@ export const SignUpFormComponent: FC<ReactHookFormProps> = ({ errors, control, o
 					)}
 				/>
 
-				<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+				<CustomButton type="submit" fullWidth variant="contained" isLoading={isLoading}>
 					Sign In
-				</Button>
+				</CustomButton>
 			</form>
 		</Paper>
 	);

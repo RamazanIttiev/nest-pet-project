@@ -31,3 +31,5 @@ export const buttonPath = (path: string) => {
 		}
 	}
 };
+
+export const formatPhoneNumber = (phone: string) => Number(phone.replace(/[^+\d]+/g, ''));

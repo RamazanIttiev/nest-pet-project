@@ -7,13 +7,17 @@ import { LoginContainer } from '../views/login/containers/login.container';
 import { ProfileContainer } from '../views/profile/containers/profile.container';
 import { ProfileData } from '../models/profile.model';
 import { RequireAuth } from '../utils/utils';
+import { Backdrop, CircularProgress } from '@mui/material';
 
 export const App: FC = () => {
 	const location = useLocation();
 
+	const [isLoading, setIsLoading] = useState(false);
 	const [profileData, setProfileData] = useState<ProfileData>({ phone: '', username: '', reminders: [] });
 
 	useEffect(() => {
+		setIsLoading(true);
+
 		if (location.pathname === '/profile') {
 			fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
 				method: 'GET',
@@ -21,6 +25,7 @@ export const App: FC = () => {
 			})
 				.then(response => {
 					if (response.ok) {
+						setIsLoading(false);
 						return response.json();
 					}
 					throw new Error('Something went wrong');
@@ -48,9 +53,17 @@ export const App: FC = () => {
 				<Route
 					path="/profile"
 					element={
-						<RequireAuth>
-							<ProfileContainer reminders={profileData.reminders} />
-						</RequireAuth>
+						<>
+							{isLoading ? (
+								<Backdrop open={isLoading}>
+									<CircularProgress color="inherit" />
+								</Backdrop>
+							) : (
+								<RequireAuth>
+									<ProfileContainer reminders={profileData.reminders} />
+								</RequireAuth>
+							)}
+						</>
 					}
 				/>
 			</Routes>
