@@ -1,40 +1,40 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Container, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { DialogState } from '../../../models/dialog.model';
 import { ProfileComponent } from '../components/profile.component';
 import { Reminder } from '../../../models/profile.model';
+import { EditFormValues } from '../../../models/form.model';
 
 interface RemindersContainerProps {
 	reminders: Reminder[];
 }
 
 export const ProfileContainer: FC<RemindersContainerProps> = memo(({ reminders }) => {
-	const [dialog, setDialog] = useState({ state: 'edit', opened: false });
+	const [dialog, setDialog] = useState(false);
 
 	const {
 		control,
+		register,
 		handleSubmit,
 		setValue,
-		formState: { errors, dirtyFields },
+		formState: { errors },
 		reset,
-	} = useForm<{ title: string; date: Date }>({ mode: 'onSubmit' });
+	} = useForm<EditFormValues>({
+		mode: 'onSubmit',
+		defaultValues: { title: '', date: new Date(new Date().setHours(new Date().getHours() + 1)) },
+	});
 
-	const onSubmit = handleSubmit((data: { title: string; date: Date }) => {
-		console.log(dirtyFields);
+	const onSubmit = handleSubmit((data: EditFormValues) => {
 		reset();
+		handleClose();
 	});
 
 	const handleClose = () => {
-		setDialog({ state: 'edit', opened: false });
+		setDialog(false);
 	};
-	const handleOpen = useCallback(
-		(openState: DialogState) => () => {
-			console.log(openState.state);
-			setDialog({ state: openState.state, opened: openState.opened });
-		},
-		[setDialog],
-	);
+	const handleOpen = useCallback(() => {
+		setDialog(true);
+	}, [setDialog]);
 
 	return (
 		<Container>
@@ -44,6 +44,7 @@ export const ProfileContainer: FC<RemindersContainerProps> = memo(({ reminders }
 					errors={errors}
 					control={control}
 					onSubmit={onSubmit}
+					register={register}
 					setValue={setValue}
 					reminders={reminders}
 					handleOpen={handleOpen}

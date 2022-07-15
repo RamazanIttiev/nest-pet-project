@@ -1,21 +1,23 @@
 import React, { FC } from 'react';
 import { Button, Card, CardActionArea, CardActions, CardContent, Grid, Typography } from '@mui/material';
-import { Delete, Done, Edit } from '@mui/icons-material';
-import { EditDialog } from '../../../components/edit-dialog';
-import { EditFormProps } from '../../../models/form.model';
-import { DialogState } from '../../../models/dialog.model';
+import { Delete, Done } from '@mui/icons-material';
+import { EditFormProps, EditFormValues } from '../../../models/form.model';
 import { Reminder } from '../../../models/profile.model';
+import { UseFormRegister } from 'react-hook-form';
+import { AddReminder } from '../../../components/add-reminder';
 
 interface ProfileComponentProps extends EditFormProps {
-	dialog: DialogState;
+	dialog: boolean;
 	reminders: Reminder[];
 	handleClose: () => void;
-	handleOpen: (openState: DialogState) => () => void;
+	register: UseFormRegister<EditFormValues>;
+	handleOpen: () => void;
 }
 
 export const ProfileComponent: FC<ProfileComponentProps> = ({
 	dialog,
 	handleOpen,
+	register,
 	handleClose,
 	reminders,
 	control,
@@ -31,7 +33,7 @@ export const ProfileComponent: FC<ProfileComponentProps> = ({
 						<Grid key={reminder.title} item md={4} sm={6} xs={11}>
 							<Card>
 								<CardActionArea
-									onClick={handleOpen({ state: 'edit', opened: true })}
+									onClick={handleOpen}
 									sx={{
 										minHeight: 100,
 										overflow: 'scroll',
@@ -49,9 +51,6 @@ export const ProfileComponent: FC<ProfileComponentProps> = ({
 									<Button>
 										<Done />
 									</Button>
-									<Button onClick={handleOpen({ state: 'edit', opened: true })}>
-										<Edit />
-									</Button>
 									<Button>
 										<Delete />
 									</Button>
@@ -64,12 +63,13 @@ export const ProfileComponent: FC<ProfileComponentProps> = ({
 				<div>No reminders</div>
 			)}
 
-			<EditDialog
+			<AddReminder
 				dialog={dialog}
 				errors={errors}
 				control={control}
 				onSubmit={onSubmit}
 				setValue={setValue}
+				register={register}
 				handleOpen={handleOpen}
 				handleClose={handleClose}
 			/>

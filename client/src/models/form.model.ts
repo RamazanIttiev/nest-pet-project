@@ -8,7 +8,7 @@ export interface FormValues {
 }
 
 export interface EditFormValues {
-	title: string;
+	title: 'title' | string;
 	date: Date;
 }
 
