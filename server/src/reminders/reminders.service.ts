@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { getFirestore } from 'firebase-admin/firestore';
-import { Reminders } from '../users/models/users.model';
+import { Reminder } from './models/reminders.model';
 
 @Injectable()
 export class RemindersService {
-	async getReminders(phone: string): Promise<Reminders[]> {
+	async getReminders(phone: string): Promise<Reminder[]> {
 		const db = getFirestore();
-		const reminders: Reminders[] = [];
+		const reminders: Reminder[] = [];
 
 		await db
 			.collection('users')
@@ -23,6 +23,17 @@ export class RemindersService {
 				});
 			});
 		return reminders;
+	}
+
+	async addReminder(phone: string, reminder: Reminder) {
+		const db = getFirestore();
+
+		return await db
+			.collection('users')
+			.doc(`${phone}`)
+			.collection('reminders')
+			.doc(`${reminder.title}`)
+			.set(reminder);
 	}
 
 	async deleteReminder(phone: string, reminder: string) {

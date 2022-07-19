@@ -1,4 +1,5 @@
 import { firestore } from 'firebase-admin';
+import { Reminder } from '../../reminders/models/reminders.model';
 
 export interface NewUser {
 	phone: string;
@@ -21,11 +22,6 @@ export interface ValidUser {
 	createdAt: firestore.Timestamp;
 }
 
-export interface Reminders {
-	title: string;
-	date: Date;
-}
-
 export interface UserWithData extends ValidUser {
-	reminders: Reminders[];
+	reminders: Reminder[];
 }
