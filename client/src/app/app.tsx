@@ -76,6 +76,7 @@ export const App: FC = () => {
 									<RemindersContainer
 										reminders={profileData.reminders}
 										userPhone={profileData.phone}
+										handleError={handleError}
 										getProfile={getProfile}
 									/>
 								</RequireAuth>

@@ -3,26 +3,26 @@ import { Box, Button, Dialog, DialogActions, DialogContent, TextField, Typograph
 import { Controller, UseFormRegister } from 'react-hook-form';
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { EditFormProps, EditFormValues } from '../models/form.model';
+import { AddFormProps } from '../models/form.model';
+import { Reminder } from '../models/profile.model';
 
-interface AddReminderProps extends EditFormProps {
+interface AddReminderProps extends AddFormProps {
 	dialog: boolean;
-	handleClose: () => void;
-	register: UseFormRegister<EditFormValues>;
-	handleOpen: () => void;
+	closeAddDialog: () => void;
+	register: UseFormRegister<Reminder>;
 }
 
-export const AddReminder: FC<AddReminderProps> = ({
+export const AddReminderDialog: FC<AddReminderProps> = ({
 	dialog,
 	register,
-	handleClose,
+	closeAddDialog,
 	control,
 	setValue,
 	errors,
 	onSubmit,
 }) => {
 	return (
-		<Dialog open={dialog} onClose={handleClose}>
+		<Dialog open={dialog} onClose={closeAddDialog}>
 			<Box sx={{ pt: 2 }}>
 				<Typography variant="h6" component="h4" textAlign="center">
 					Add your reminder
@@ -63,7 +63,7 @@ export const AddReminder: FC<AddReminderProps> = ({
 						/>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={handleClose}>Cancel</Button>
+						<Button onClick={closeAddDialog}>Cancel</Button>
 						<Button type="submit">Subscribe</Button>
 					</DialogActions>
 				</form>
