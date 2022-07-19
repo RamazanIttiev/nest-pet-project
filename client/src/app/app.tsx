@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Header } from '../views/header/header';
 import { HomeContainer } from '../views/home/containers/home.container';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
@@ -11,6 +10,7 @@ import { Alert, Backdrop, CircularProgress, Slide } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import { TransitionProps } from '@mui/material/transitions';
 import { AlertsModel } from '../models/alerts.model';
+import { HeaderContainer } from '../views/header/containers/header.container';
 
 export const App: FC = () => {
 	const location = useLocation();
@@ -48,10 +48,6 @@ export const App: FC = () => {
 			});
 	};
 
-	const clearProfile = () => {
-		setProfileData({ phone: '', username: '', reminders: [] });
-	};
-
 	const handleError = (error: AlertsModel) => {
 		setError({ message: error.message, severity: error.severity });
 	};
@@ -62,7 +58,7 @@ export const App: FC = () => {
 
 	return (
 		<>
-			<Header clearProfile={clearProfile} username={profileData.username} />
+			<HeaderContainer username={profileData.username} />
 			<Routes>
 				<Route index element={<HomeContainer />} />
 				<Route path="/register" element={<SignUpContainer handleError={handleError} />} />

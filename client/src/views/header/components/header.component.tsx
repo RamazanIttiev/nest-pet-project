@@ -8,53 +8,32 @@ import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useLocation, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import { CustomLink } from '../../components/custom-link';
-import { buttonLabel, buttonPath } from '../../utils/helpers';
+import { CustomLink } from '../../../components/custom-link';
+import { buttonLabel, buttonPath } from '../../../utils/helpers';
 
-import AvatarIcon from '../../assets/avatar.svg';
+import AvatarIcon from '../../../assets/avatar.svg';
 import { Button } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
-interface HeaderProps {
+interface HeaderComponentProps {
 	username: string;
-	clearProfile: () => void;
+	anchorEl: HTMLElement;
+	isMenuOpened: boolean;
+	handleMenuClose: () => void;
+	settings: { title: string; callback: () => Promise<void> }[];
+	handleMenuOpen: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const Header: FC<HeaderProps> = ({ username, clearProfile }) => {
+export const HeaderComponent: FC<HeaderComponentProps> = ({
+	username,
+	settings,
+	anchorEl,
+	isMenuOpened,
+	handleMenuOpen,
+	handleMenuClose,
+}) => {
 	const location = useLocation();
-	const navigate = useNavigate();
-
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const open = Boolean(anchorEl);
-
-	const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-
-	const handleLogout = async () => {
-		clearProfile();
-		setAnchorEl(null);
-
-		localStorage.removeItem('isAuthenticated');
-
-		await fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
-			method: 'GET',
-			credentials: 'include',
-		});
-		navigate('/');
-	};
-
-	const settings = [
-		{
-			title: 'Log Out',
-			callback: handleLogout,
-		},
-	];
 
 	return (
 		<AppBar position="static">
@@ -86,8 +65,8 @@ export const Header: FC<HeaderProps> = ({ username, clearProfile }) => {
 								<Button
 									aria-haspopup="true"
 									onClick={handleMenuOpen}
-									aria-expanded={open ? 'true' : undefined}
-									aria-controls={open ? 'basic-menu' : undefined}
+									aria-expanded={isMenuOpened ? 'true' : undefined}
+									aria-controls={isMenuOpened ? 'basic-menu' : undefined}
 									sx={{ p: 0 }}>
 									<>
 										<Typography color={'#fff'} mr={1}>
@@ -121,8 +100,8 @@ export const Header: FC<HeaderProps> = ({ username, clearProfile }) => {
 						)}
 						<Menu
 							sx={{ mt: '45px' }}
-							open={open}
-							onClose={handleClose}
+							open={isMenuOpened}
+							onClose={handleMenuClose}
 							anchorEl={anchorEl}
 							anchorOrigin={{
 								vertical: 'top',
