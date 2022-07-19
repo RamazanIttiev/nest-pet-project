@@ -6,7 +6,7 @@ import { Reminder } from '../../../models/profile.model';
 import { UseFormRegister } from 'react-hook-form';
 import { AddReminder } from '../../../components/add-reminder';
 
-interface ProfileComponentProps extends EditFormProps {
+interface RemindersComponentProps extends EditFormProps {
 	dialog: boolean;
 	reminders: Reminder[];
 	handleClose: () => void;
@@ -15,7 +15,7 @@ interface ProfileComponentProps extends EditFormProps {
 	deleteReminder: (reminder: string) => Promise<void>;
 }
 
-export const ProfileComponent: FC<ProfileComponentProps> = ({
+export const RemindersComponent: FC<RemindersComponentProps> = ({
 	dialog,
 	handleOpen,
 	register,

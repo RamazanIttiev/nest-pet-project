@@ -4,7 +4,7 @@ import { Header } from '../views/header/header';
 import { HomeContainer } from '../views/home/containers/home.container';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
-import { ProfileContainer } from '../views/profile/containers/profile.container';
+import { RemindersContainer } from '../views/reminders/containers/reminders.container';
 import { ProfileData } from '../models/profile.model';
 import { RequireAuth } from '../utils/utils';
 import { Alert, Backdrop, CircularProgress, Slide } from '@mui/material';
@@ -77,7 +77,7 @@ export const App: FC = () => {
 								</Backdrop>
 							) : (
 								<RequireAuth>
-									<ProfileContainer
+									<RemindersContainer
 										reminders={profileData.reminders}
 										userPhone={profileData.phone}
 										getProfile={getProfile}

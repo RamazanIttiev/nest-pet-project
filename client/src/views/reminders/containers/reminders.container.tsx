@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Container, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { ProfileComponent } from '../components/profile.component';
+import { RemindersComponent } from '../components/reminders.component';
 import { Reminder } from '../../../models/profile.model';
 import { EditFormValues } from '../../../models/form.model';
 
@@ -11,7 +11,7 @@ interface RemindersContainerProps {
 	getProfile: () => void;
 }
 
-export const ProfileContainer: FC<RemindersContainerProps> = memo(({ userPhone, reminders, getProfile }) => {
+export const RemindersContainer: FC<RemindersContainerProps> = memo(({ userPhone, reminders, getProfile }) => {
 	const [dialog, setDialog] = useState(false);
 
 	const {
@@ -54,7 +54,7 @@ export const ProfileContainer: FC<RemindersContainerProps> = memo(({ userPhone, 
 	return (
 		<Container>
 			<Grid container spacing={8} justifyContent="center" padding={'64px 0'}>
-				<ProfileComponent
+				<RemindersComponent
 					dialog={dialog}
 					errors={errors}
 					control={control}
