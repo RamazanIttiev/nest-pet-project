@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { NewUser, UserWithData } from '../users/models/users.model';
+import { NewUser, UserWithData, ValidUser } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
 import { RemindersService } from '../reminders/reminders.service';
@@ -52,7 +52,7 @@ export class AuthService {
 		return this.jwtService.sign(payload, { expiresIn: this.configService.get<string>('EXPIRE_IN') });
 	}
 
-	async validateUser(phone: string, pass: string): Promise<UserWithData> {
+	async validateUser(phone: string, pass: string): Promise<ValidUser> {
 		const userFromDB = await this.usersService.findUserInDB(phone);
 
 		if (!userFromDB.exists) {
@@ -65,14 +65,11 @@ export class AuthService {
 			throw new HttpException('Your password is incorrect', HttpStatus.UNAUTHORIZED);
 		}
 
-		const reminders = await this.remindersService.getReminders(userFromDB.data().phone);
-
 		return {
 			id: userFromDB.data().id,
 			phone: userFromDB.data().phone,
 			username: userFromDB.data().username,
 			createdAt: userFromDB.data().createdAt,
-			reminders,
 		};
 	}
 }

@@ -24,4 +24,10 @@ export class RemindersService {
 			});
 		return reminders;
 	}
+
+	async deleteReminder(phone: string, reminder: string) {
+		const db = getFirestore();
+
+		return await db.collection('users').doc(`${phone}`).collection('reminders').doc(`${reminder}`).delete();
+	}
 }

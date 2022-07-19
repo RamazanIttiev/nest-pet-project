@@ -1,13 +1,14 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { UserWithData } from '../../users/models/users.model';
+import { ValidUser } from '../../users/models/users.model';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { RemindersService } from '../../reminders/reminders.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-	constructor(configService: ConfigService) {
+	constructor(configService: ConfigService, private remindersService: RemindersService) {
 		super({
 			jwtFromRequest: ExtractJwt.fromExtractors([
 				(req: Request) => {
@@ -19,7 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		});
 	}
 
-	async validate(data: UserWithData) {
-		return data;
+	async validate(data: ValidUser) {
+		const reminders = await this.remindersService.getReminders(data.phone);
+		return { reminders, ...data };
 	}
 }
