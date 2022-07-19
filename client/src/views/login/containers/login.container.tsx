@@ -4,16 +4,20 @@ import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
 import { useNavigate } from 'react-router-dom';
 import { formatPhoneNumber } from '../../../utils/helpers';
+import { AlertsModel } from '../../../models/alerts.model';
 
 const defaultValues: Omit<FormValues, 'name'> = {
 	phone: '',
 	password: '',
 };
 
-interface LoginContainerProps {}
+interface LoginContainerProps {
+	handleError: (error: AlertsModel) => void;
+}
 
-export const LoginContainer: FC<LoginContainerProps> = () => {
+export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 	const navigate = useNavigate();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [formData, setFormData] = useState(defaultValues);
 
@@ -41,14 +45,21 @@ export const LoginContainer: FC<LoginContainerProps> = () => {
 		login(data.phone, data.password)
 			.then(response => {
 				localStorage.setItem('isAuthenticated', 'true');
+
 				if (response.ok) {
 					navigate('/profile');
 					setIsLoading(false);
+
+					return response.json();
 				} else {
-					console.log(response);
+					setIsLoading(false);
+
+					return response.json().then(response => {
+						handleError({ message: response.message, severity: 'error' });
+					});
 				}
 			})
-			.catch(error => alert(error));
+			.catch(() => handleError({ message: 'Something went wrong. Try to reload', severity: 'error' }));
 
 		setFormData(data);
 		reset();

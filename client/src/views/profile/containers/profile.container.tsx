@@ -6,10 +6,12 @@ import { Reminder } from '../../../models/profile.model';
 import { EditFormValues } from '../../../models/form.model';
 
 interface RemindersContainerProps {
+	userPhone: string;
 	reminders: Reminder[];
+	getProfile: () => void;
 }
 
-export const ProfileContainer: FC<RemindersContainerProps> = memo(({ reminders }) => {
+export const ProfileContainer: FC<RemindersContainerProps> = memo(({ userPhone, reminders, getProfile }) => {
 	const [dialog, setDialog] = useState(false);
 
 	const {
@@ -32,9 +34,22 @@ export const ProfileContainer: FC<RemindersContainerProps> = memo(({ reminders }
 	const handleClose = () => {
 		setDialog(false);
 	};
+
 	const handleOpen = useCallback(() => {
 		setDialog(true);
 	}, [setDialog]);
+
+	const deleteReminder = async (reminder: string) => {
+		await fetch(`${process.env.REACT_APP_SERVER_URL}/delete-reminder`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'DELETE',
+			credentials: 'include',
+			body: JSON.stringify({ phone: userPhone, reminder }),
+		});
+		getProfile();
+	};
 
 	return (
 		<Container>
@@ -49,6 +64,7 @@ export const ProfileContainer: FC<RemindersContainerProps> = memo(({ reminders }
 					reminders={reminders}
 					handleOpen={handleOpen}
 					handleClose={handleClose}
+					deleteReminder={deleteReminder}
 				/>
 			</Grid>
 		</Container>

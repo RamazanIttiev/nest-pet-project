@@ -12,6 +12,7 @@ interface ProfileComponentProps extends EditFormProps {
 	handleClose: () => void;
 	register: UseFormRegister<EditFormValues>;
 	handleOpen: () => void;
+	deleteReminder: (reminder: string) => Promise<void>;
 }
 
 export const ProfileComponent: FC<ProfileComponentProps> = ({
@@ -24,10 +25,11 @@ export const ProfileComponent: FC<ProfileComponentProps> = ({
 	setValue,
 	errors,
 	onSubmit,
+	deleteReminder,
 }) => {
 	return (
 		<>
-			{reminders ? (
+			{reminders.length !== 0 ? (
 				reminders.map(reminder => {
 					return (
 						<Grid key={reminder.title} item md={4} sm={6} xs={11}>
@@ -51,7 +53,7 @@ export const ProfileComponent: FC<ProfileComponentProps> = ({
 									<Button>
 										<Done />
 									</Button>
-									<Button>
+									<Button onClick={() => deleteReminder(reminder.title)}>
 										<Delete />
 									</Button>
 								</CardActions>

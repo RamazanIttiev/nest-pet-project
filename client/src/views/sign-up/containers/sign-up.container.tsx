@@ -3,6 +3,12 @@ import { useForm } from 'react-hook-form';
 import { SignUpFormComponent } from '../components/sign-up-form.component';
 import { FormValues } from '../../../models/form.model';
 import { formatPhoneNumber } from '../../../utils/helpers';
+import { AlertsModel } from '../../../models/alerts.model';
+import { useNavigate } from 'react-router-dom';
+
+interface SignUpContainerProps {
+	handleError: (error: AlertsModel) => void;
+}
 
 const defaultValues: FormValues = {
 	name: '',
@@ -10,7 +16,9 @@ const defaultValues: FormValues = {
 	password: '',
 };
 
-export const SignUpContainer: FC = () => {
+export const SignUpContainer: FC<SignUpContainerProps> = ({ handleError }) => {
+	const navigate = useNavigate();
+
 	const [formData, setFormData] = useState(defaultValues);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -35,11 +43,21 @@ export const SignUpContainer: FC = () => {
 
 	const onSubmit = handleSubmit((data: FormValues) => {
 		createProfile(data.phone, data.name, data.password)
-			.then(res => {
-				setIsLoading(false);
-				console.log(res);
+			.then(response => {
+				if (response.ok) {
+					navigate('/');
+					setIsLoading(false);
+
+					return response.json();
+				} else {
+					setIsLoading(false);
+
+					return response.json().then(response => {
+						handleError({ message: response.message, severity: 'error' });
+					});
+				}
 			})
-			.catch(error => alert(error));
+			.catch(() => handleError({ message: 'Something went wrong. Try to reload', severity: 'error' }));
 
 		setFormData(data);
 		reset();
