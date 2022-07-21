@@ -27,14 +27,15 @@ export const App: FC = () => {
 		}
 	}, [location.pathname]);
 
-	const getProfile = () => {
-		fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
+	const getProfile = async () => {
+		await fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
 			method: 'GET',
 			credentials: 'include',
 		})
 			.then(response => {
 				if (response.ok) {
 					setIsLoading(false);
+					console.log('load');
 					return response.json();
 				} else {
 					return setError({ message: 'Something went wrong', severity: 'error' });
