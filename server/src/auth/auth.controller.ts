@@ -28,7 +28,7 @@ export class AuthController {
 	 * this route handler returns a signed JWT and user's data to the calling app.
 	 *
 	 * AuthGuard('local') refers to local.strategy.ts, which validates user
-	 * and returns accessToken that contains all necessary data (profile data and reminders)
+	 * and returns accessToken that contains all necessary data (profile data and tasks)
 	 */
 	@UseGuards(AuthGuard('local'))
 	@Post('login')
@@ -66,7 +66,7 @@ export class AuthController {
 	 */
 	@UseGuards(AuthGuard('jwt'))
 	@Get('profile')
-	getReminders(@Request() request: any): UserWithData {
+	getTasks(@Request() request: any): UserWithData {
 		return request.user;
 	}
 }

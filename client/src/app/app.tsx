@@ -3,7 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { Home } from '../views/home/home';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
-import { RemindersContainer } from '../views/reminders/containers/reminders.container';
+import { TasksContainer } from '../views/tasks/containers/tasks.container';
 import { ProfileData } from '../models/profile.model';
 import { RequireAuth } from '../utils/utils';
 import { Alert, Backdrop, CircularProgress, Slide } from '@mui/material';
@@ -18,7 +18,7 @@ export const App: FC = () => {
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<AlertsModel>({ message: '', severity: 'success' });
-	const [profileData, setProfileData] = useState<ProfileData>({ phone: '', username: '', reminders: [] });
+	const [profileData, setProfileData] = useState<ProfileData>({ phone: '', username: '', tasks: [] });
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -74,8 +74,8 @@ export const App: FC = () => {
 								</Backdrop>
 							) : (
 								<RequireAuth>
-									<RemindersContainer
-										reminders={profileData.reminders}
+									<TasksContainer
+										tasks={profileData.tasks}
 										userPhone={profileData.phone}
 										handleError={handleError}
 										getProfile={getProfile}

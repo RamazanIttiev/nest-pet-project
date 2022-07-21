@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
-import { RemindersService } from '../reminders/reminders.service';
+import { TasksService } from '../tasks/tasks.service';
 import { LocalStrategy } from './strategies/local.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -28,6 +28,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 	controllers: [AuthController],
 	exports: [AuthService],
-	providers: [AuthService, RemindersService, LocalStrategy, JwtStrategy],
+	providers: [AuthService, TasksService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

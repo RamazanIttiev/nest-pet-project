@@ -36,7 +36,7 @@ export const Home: FC = () => {
 								mt: 2,
 							}}>
 							Here you can create an account that I will be securely stored in database. Also you can add
-							your personal reminders and get notified via sms on the date and time that you have set
+							your personal tasks and get notified via sms on the date and time that you have set
 						</Typography>
 					</Box>
 

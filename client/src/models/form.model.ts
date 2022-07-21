@@ -1,5 +1,5 @@
 import React from 'react';
-import { Reminder } from './profile.model';
+import { Task } from './profile.model';
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 
 export interface FormValues {
@@ -16,8 +16,8 @@ export interface ReactHookFormProps {
 }
 
 export interface AddFormProps {
-	errors: FieldErrors<Reminder>;
-	control: Control<Reminder, any>;
+	errors: FieldErrors<Task>;
+	control: Control<Task, any>;
 	onSubmit: (e?: React.BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
-	setValue: UseFormSetValue<Reminder>;
+	setValue: UseFormSetValue<Task>;
 }

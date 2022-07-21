@@ -2,22 +2,22 @@ import React, { FC } from 'react';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { Delete, Done } from '@mui/icons-material';
 import { AddFormProps } from '../../../models/form.model';
-import { Reminder } from '../../../models/profile.model';
+import { Task } from '../../../models/profile.model';
 import { UseFormRegister } from 'react-hook-form';
 
-interface RemindersComponentProps extends AddFormProps {
+interface TasksComponentProps extends AddFormProps {
 	dialog: boolean;
-	reminders: Reminder[];
-	register: UseFormRegister<Reminder>;
-	deleteReminder: (reminder: string) => Promise<void>;
-	completeReminder: (reminder: string) => Promise<void>;
+	tasks: Task[];
+	register: UseFormRegister<Task>;
+	deleteTask: (task: string) => Promise<void>;
+	completeTask: (task: string) => Promise<void>;
 }
 
-export const RemindersComponent: FC<RemindersComponentProps> = ({ reminders, deleteReminder, completeReminder }) => {
+export const TasksComponent: FC<TasksComponentProps> = ({ tasks, deleteTask, completeTask }) => {
 	return (
 		<>
-			{reminders.map(reminder => (
-				<Grid key={reminder.title} item md={4} sm={6} xs={11}>
+			{tasks.map(task => (
+				<Grid key={task.title} item md={4} sm={6} xs={11}>
 					<Card>
 						<CardContent
 							sx={{
@@ -28,14 +28,14 @@ export const RemindersComponent: FC<RemindersComponentProps> = ({ reminders, del
 								justifyContent: 'start',
 							}}>
 							<Typography variant="h5" component="h3">
-								{reminder.title}
+								{task.title}
 							</Typography>
 						</CardContent>
 						<CardActions sx={{ justifyContent: 'center' }}>
-							<Button onClick={() => completeReminder(reminder.title)}>
+							<Button onClick={() => completeTask(task.title)}>
 								<Done />
 							</Button>
-							<Button onClick={() => deleteReminder(reminder.title)}>
+							<Button onClick={() => deleteTask(task.title)}>
 								<Delete />
 							</Button>
 						</CardActions>

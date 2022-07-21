@@ -1,5 +1,5 @@
 import { firestore } from 'firebase-admin';
-import { Reminder } from '../../reminders/models/reminders.model';
+import { Task } from '../../tasks/models/tasks.model';
 
 export interface NewUser {
 	phone: string;
@@ -23,5 +23,5 @@ export interface ValidUser {
 }
 
 export interface UserWithData extends ValidUser {
-	reminders: Reminder[];
+	tasks: Task[];
 }

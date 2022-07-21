@@ -4,28 +4,28 @@ import { Controller, UseFormRegister } from 'react-hook-form';
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { AddFormProps } from '../models/form.model';
-import { Reminder } from '../models/profile.model';
+import { Task } from '../models/profile.model';
 
-interface AddReminderProps extends AddFormProps {
+interface AddTaskProps extends AddFormProps {
 	dialog: boolean;
 	closeAddDialog: () => void;
-	register: UseFormRegister<Reminder>;
+	register: UseFormRegister<Task>;
 }
 
-export const AddReminderDialog: FC<AddReminderProps> = ({
-	dialog,
-	register,
-	closeAddDialog,
-	control,
-	setValue,
-	errors,
-	onSubmit,
-}) => {
+export const AddTaskDialog: FC<AddTaskProps> = ({
+													dialog,
+													register,
+													closeAddDialog,
+													control,
+													setValue,
+													errors,
+													onSubmit,
+												}) => {
 	return (
 		<Dialog open={dialog} onClose={closeAddDialog}>
 			<Box sx={{ pt: 2 }}>
 				<Typography variant="h6" component="h4" textAlign="center">
-					Add your reminder
+					Add your task
 				</Typography>
 				<form onSubmit={onSubmit}>
 					<DialogContent>
@@ -41,7 +41,7 @@ export const AddReminderDialog: FC<AddReminderProps> = ({
 							sx={{ mb: 2 }}
 							autoComplete="off"
 							error={!!errors?.title}
-							placeholder="Add your reminder"
+							placeholder="Add your task"
 							helperText={errors?.title && errors?.title.message}
 						/>
 						<Controller

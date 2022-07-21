@@ -3,7 +3,7 @@ import { UsersService } from '../users/users.service';
 import { NewUser, UserWithData, ValidUser } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
-import { RemindersService } from '../reminders/reminders.service';
+import { TasksService } from '../tasks/tasks.service';
 import { comparePasswords } from '../shared/utils';
 import { ConfigService } from '@nestjs/config';
 
@@ -14,7 +14,7 @@ export class AuthService {
 	 */
 	constructor(
 		private readonly usersService: UsersService,
-		private readonly remindersService: RemindersService,
+		private readonly tasksService: TasksService,
 		private readonly jwtService: JwtService,
 		private readonly configService: ConfigService,
 	) {}
@@ -47,7 +47,7 @@ export class AuthService {
 	 * and generates accessToken that contains payload object
 	 */
 	async login(user: UserWithData) {
-		const payload = { phone: user.phone, username: user.username, reminders: user.reminders };
+		const payload = { phone: user.phone, username: user.username, tasks: user.tasks };
 
 		return this.jwtService.sign(payload, { expiresIn: this.configService.get<string>('EXPIRE_IN') });
 	}

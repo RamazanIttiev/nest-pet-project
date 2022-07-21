@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Button } from '@mui/material';
 
-interface AddReminderButtonProps {
+interface AddTaskButtonProps {
 	styles?: object;
 	openAddDialog: () => void;
 }
 
-export const AddReminderButton: FC<AddReminderButtonProps> = ({ openAddDialog, styles }) => {
+export const AddTaskButton: FC<AddTaskButtonProps> = ({ openAddDialog, styles }) => {
 	return (
 		<Button
 			variant="outlined"
