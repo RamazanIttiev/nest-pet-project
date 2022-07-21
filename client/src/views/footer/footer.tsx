@@ -13,7 +13,7 @@ export const Footer = () => {
 				bottom: 0,
 				left: 0,
 				right: 0,
-				p: '8px 16px',
+				p: '16px',
 			}}>
 			<Typography
 				sx={{

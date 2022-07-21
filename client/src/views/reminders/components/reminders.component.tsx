@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, Card, CardActionArea, CardActions, CardContent, Grid, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import { Delete, Done } from '@mui/icons-material';
 import { AddFormProps } from '../../../models/form.model';
 import { Reminder } from '../../../models/profile.model';
@@ -19,7 +19,7 @@ export const RemindersComponent: FC<RemindersComponentProps> = ({ reminders, del
 			{reminders.map(reminder => (
 				<Grid key={reminder.title} item md={4} sm={6} xs={11}>
 					<Card>
-						<CardActionArea
+						<CardContent
 							sx={{
 								minHeight: 100,
 								overflow: 'scroll',
@@ -27,12 +27,10 @@ export const RemindersComponent: FC<RemindersComponentProps> = ({ reminders, del
 								alignItems: 'baseline',
 								justifyContent: 'start',
 							}}>
-							<CardContent>
-								<Typography variant="h5" component="h3">
-									{reminder.title}
-								</Typography>
-							</CardContent>
-						</CardActionArea>
+							<Typography variant="h5" component="h3">
+								{reminder.title}
+							</Typography>
+						</CardContent>
 						<CardActions sx={{ justifyContent: 'center' }}>
 							<Button onClick={() => completeReminder(reminder.title)}>
 								<Done />

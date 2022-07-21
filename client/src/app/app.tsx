@@ -88,6 +88,10 @@ export const App: FC = () => {
 			</Routes>
 			<Footer />
 			<Snackbar
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'center',
+				}}
 				open={!!Boolean(error.message)}
 				autoHideDuration={6000}
 				onClose={hideAlert}
@@ -95,7 +99,7 @@ export const App: FC = () => {
 					return (
 						<Slide
 							{...props}
-							direction="right"
+							direction="up"
 							children={
 								<Alert sx={{ width: '100%' }} severity={error.severity}>
 									{error.message}
