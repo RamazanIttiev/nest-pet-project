@@ -35,7 +35,6 @@ export const App: FC = () => {
 			.then(response => {
 				if (response.ok) {
 					setIsLoading(false);
-					console.log('load');
 					return response.json();
 				} else {
 					return setError({ message: 'Something went wrong', severity: 'error' });
@@ -44,8 +43,8 @@ export const App: FC = () => {
 			.then(profileData => {
 				return setProfileData(profileData);
 			})
-			.catch(error => {
-				console.log(error);
+			.catch(() => {
+				return setError({ message: 'Something went wrong. Try to re-login', severity: 'error' });
 			});
 	};
 

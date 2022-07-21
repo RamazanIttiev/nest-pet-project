@@ -59,7 +59,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 					});
 				}
 			})
-			.catch(() => handleError({ message: 'Something went wrong. Try to reload', severity: 'error' }));
+			.catch(() => handleError({ message: 'Something went wrong. Try to re-login', severity: 'error' }));
 
 		setFormData(data);
 		reset();
