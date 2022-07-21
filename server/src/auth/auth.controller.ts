@@ -35,7 +35,7 @@ export class AuthController {
 	public async login(
 		@Request() { user }: { user: UserWithData },
 		@Res({ passthrough: true }) response: Response,
-	): Promise<string> {
+	): Promise<{ accessToken: string }> {
 		const accessToken = await this.authService.login(user);
 
 		response.cookie(
@@ -47,7 +47,7 @@ export class AuthController {
 			},
 		);
 
-		return accessToken;
+		return { accessToken };
 	}
 
 	@Get('logout')
