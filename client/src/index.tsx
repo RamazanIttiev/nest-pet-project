@@ -4,6 +4,8 @@ import { App } from './app/app';
 import { CssBaseline } from '@mui/material';
 import { BrowserRouter } from 'react-router-dom';
 
+import 'animate.css';
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
 	<React.StrictMode>

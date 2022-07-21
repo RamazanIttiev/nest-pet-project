@@ -3,16 +3,18 @@ import { Button, CircularProgress } from '@mui/material';
 
 interface CustomButtonProps {
 	sx?: object;
-	fullWidth: boolean;
-	isLoading: boolean;
+	href?: string;
+	fullWidth?: boolean;
+	isLoading?: boolean;
 	children: JSX.Element | string;
-	type: 'button' | 'submit' | 'reset';
-	variant: 'text' | 'outlined' | 'contained';
+	type?: 'button' | 'submit' | 'reset';
+	variant?: 'text' | 'outlined' | 'contained';
 }
 
-const CustomButton: FC<CustomButtonProps> = ({ children, sx, type, fullWidth, variant, isLoading }) => {
+const CustomButton: FC<CustomButtonProps> = ({ children, sx, type, fullWidth, variant, isLoading, href }) => {
 	return (
 		<Button
+			href={href}
 			disabled={isLoading}
 			type={type}
 			fullWidth={fullWidth}

@@ -64,7 +64,7 @@ export const AddReminderDialog: FC<AddReminderProps> = ({
 					</DialogContent>
 					<DialogActions>
 						<Button onClick={closeAddDialog}>Cancel</Button>
-						<Button type="submit">Subscribe</Button>
+						<Button type="submit">Add</Button>
 					</DialogActions>
 				</form>
 			</Box>

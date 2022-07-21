@@ -59,7 +59,7 @@ export const App: FC = () => {
 
 	return (
 		<>
-			<HeaderContainer username={profileData.username} />
+			{location.pathname !== '/' && <HeaderContainer username={profileData.username} />}
 			<Routes>
 				<Route index element={<Home />} />
 				<Route path="/register" element={<SignUpContainer handleError={handleError} />} />

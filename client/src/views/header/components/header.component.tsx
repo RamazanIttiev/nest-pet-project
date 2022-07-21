@@ -9,8 +9,6 @@ import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
-import { CustomLink } from '../../../components/custom-link';
-import { buttonLabel, buttonPath } from '../../../utils/helpers';
 
 import AvatarIcon from '../../../assets/avatar.svg';
 import { Button } from '@mui/material';
@@ -46,21 +44,19 @@ export const HeaderComponent: FC<HeaderComponentProps> = ({
 					<Typography
 						variant="h5"
 						noWrap
+						textAlign="center"
 						component="a"
 						href="/"
 						sx={{
-							mr: 2,
-							fontFamily: 'monospace',
-							fontWeight: 700,
 							letterSpacing: '.3rem',
 							color: 'inherit',
 							textDecoration: 'none',
 						}}>
-						LOGO
+						Home
 					</Typography>
 
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
-						{location.pathname === '/profile' ? (
+						{location.pathname === '/profile' && (
 							<Tooltip title="Open settings">
 								<Button
 									aria-haspopup="true"
@@ -76,27 +72,6 @@ export const HeaderComponent: FC<HeaderComponentProps> = ({
 									</>
 								</Button>
 							</Tooltip>
-						) : location.pathname === '/' ? (
-							<>
-								<CustomLink
-									styles={{
-										marginRight: '16px',
-									}}
-									location="/login">
-									Login
-								</CustomLink>
-								<CustomLink
-									styles={{
-										marginRight: '16px',
-									}}
-									location="/register">
-									Sign Up
-								</CustomLink>
-							</>
-						) : (
-							<CustomLink location={buttonPath(buttonLabel(location.pathname))}>
-								{buttonLabel(location.pathname)}
-							</CustomLink>
 						)}
 						<Menu
 							sx={{ mt: '45px' }}

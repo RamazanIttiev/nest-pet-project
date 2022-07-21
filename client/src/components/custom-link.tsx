@@ -16,7 +16,7 @@ export const CustomLink: FC<CustomLinkProps> = ({ children, location, styles }) 
 	};
 	return (
 		<Link style={LinkStyles} to={location}>
-			<Typography color="#fff">{children}</Typography>
+			<Typography color="primary">{children}</Typography>
 		</Link>
 	);
 };
