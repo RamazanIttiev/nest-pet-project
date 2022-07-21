@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { HomeContainer } from '../views/home/containers/home.container';
+import { Home } from '../views/home/home';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
 import { LoginContainer } from '../views/login/containers/login.container';
 import { RemindersContainer } from '../views/reminders/containers/reminders.container';
@@ -11,6 +11,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { TransitionProps } from '@mui/material/transitions';
 import { AlertsModel } from '../models/alerts.model';
 import { HeaderContainer } from '../views/header/containers/header.container';
+import { Footer } from '../views/footer/footer';
 
 export const App: FC = () => {
 	const location = useLocation();
@@ -60,7 +61,7 @@ export const App: FC = () => {
 		<>
 			<HeaderContainer username={profileData.username} />
 			<Routes>
-				<Route index element={<HomeContainer />} />
+				<Route index element={<Home />} />
 				<Route path="/register" element={<SignUpContainer handleError={handleError} />} />
 				<Route path="/login" element={<LoginContainer handleError={handleError} />} />
 				<Route
@@ -85,6 +86,7 @@ export const App: FC = () => {
 					}
 				/>
 			</Routes>
+			<Footer />
 			<Snackbar
 				open={!!Boolean(error.message)}
 				autoHideDuration={6000}
