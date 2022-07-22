@@ -27,6 +27,13 @@ export const Footer: FC = () => {
 					Ramazan Ittiev
 				</Link>
 			</Typography>
+			<Link
+				color="#0000006e"
+				fontSize="12px"
+				target="_blank"
+				href="https://github.com/RamazanIttiev/nest-pet-project">
+				This project on Git
+			</Link>
 			<Box
 				sx={{
 					display: 'flex',
