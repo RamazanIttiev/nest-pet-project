@@ -92,7 +92,8 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 					sx={{
 						padding: '48px 0',
 						mt: 3,
-					}}>
+					}}
+					justifyContent="center">
 					<TasksComponent
 						dialog={dialog}
 						errors={errors}
@@ -111,7 +112,7 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 						<Typography>Completed tasks</Typography>
 					</>
 				)}
-				<Grid container spacing={4} sx={{ p: '48px 0 81px' }}>
+				<Grid container spacing={4} sx={{ p: '48px 0 81px' }} justifyContent="center">
 					<TasksComponent
 						dialog={dialog}
 						errors={errors}

@@ -53,7 +53,7 @@ export const HeaderComponent: FC<HeaderComponentProps> = ({
 							color: 'inherit',
 							textDecoration: 'none',
 						}}>
-						<Home sx={{ fontSize: '48px' }} />
+						<Home sx={{ fontSize: '36px' }} />
 					</Typography>
 
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
