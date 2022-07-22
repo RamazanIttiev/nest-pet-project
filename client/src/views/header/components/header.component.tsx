@@ -13,6 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import AvatarIcon from '../../../assets/avatar.svg';
 import { Button } from '@mui/material';
 import { useLocation } from 'react-router-dom';
+import { Home } from '@mui/icons-material';
 
 interface HeaderComponentProps {
 	username: string;
@@ -48,11 +49,11 @@ export const HeaderComponent: FC<HeaderComponentProps> = ({
 						component="a"
 						href="/"
 						sx={{
-							letterSpacing: '.3rem',
+							width: 64,
 							color: 'inherit',
 							textDecoration: 'none',
 						}}>
-						Home
+						<Home sx={{ fontSize: '48px' }} />
 					</Typography>
 
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>

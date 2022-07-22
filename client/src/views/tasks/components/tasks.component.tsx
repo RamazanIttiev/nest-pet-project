@@ -9,8 +9,8 @@ interface TasksComponentProps extends AddFormProps {
 	dialog: boolean;
 	tasks: Task[];
 	register: UseFormRegister<Task>;
-	deleteTask: (task: string) => Promise<void>;
-	completeTask: (task: string) => Promise<void>;
+	deleteTask: (task: Task) => Promise<void>;
+	completeTask?: (task: Task) => Promise<void>;
 }
 
 export const TasksComponent: FC<TasksComponentProps> = ({ tasks, deleteTask, completeTask }) => {
@@ -18,7 +18,7 @@ export const TasksComponent: FC<TasksComponentProps> = ({ tasks, deleteTask, com
 		<>
 			{tasks.map(task => (
 				<Grid key={task.title} item md={4} sm={6} xs={11}>
-					<Card>
+					<Card sx={task.done && { background: '#1976d21f' }}>
 						<CardContent
 							sx={{
 								minHeight: 100,
@@ -32,10 +32,12 @@ export const TasksComponent: FC<TasksComponentProps> = ({ tasks, deleteTask, com
 							</Typography>
 						</CardContent>
 						<CardActions sx={{ justifyContent: 'center' }}>
-							<Button onClick={() => completeTask(task.title)}>
-								<Done />
-							</Button>
-							<Button onClick={() => deleteTask(task.title)}>
+							{!task.done && (
+								<Button onClick={() => completeTask(task)}>
+									<Done />
+								</Button>
+							)}
+							<Button onClick={() => deleteTask(task)}>
 								<Delete />
 							</Button>
 						</CardActions>

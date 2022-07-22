@@ -1,11 +1,11 @@
 import React, { FC, memo, useState } from 'react';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { TasksComponent } from '../components/tasks.component';
 import { Task } from '../../../models/profile.model';
-import { AddTaskDialog } from '../../../components/add-task-dialog';
-import { AddTaskButton } from '../../../components/add-task-button';
 import { AlertsModel } from '../../../models/alerts.model';
+import { AddTaskButton } from '../../../components/add-task-button';
+import { AddTaskDialog } from '../../../components/add-task-dialog';
 
 interface TasksContainerProps {
 	userPhone: string;
@@ -16,6 +16,9 @@ interface TasksContainerProps {
 
 export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks, getProfile, handleError }) => {
 	const [dialog, setDialog] = useState(false);
+
+	const allTasks = tasks.filter(task => task.done !== true);
+	const completedTasks = tasks.filter(task => task.done === true);
 
 	const {
 		control,
@@ -52,13 +55,21 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 		setDialog(true);
 	};
 
-	const completeTask = async (task: string) => {
-		await deleteTask(task);
+	const completeTask = async (task: Task) => {
+		await fetch(`${process.env.REACT_APP_SERVER_URL}/update-task`, {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'PUT',
+			credentials: 'include',
+			body: JSON.stringify({ phone: userPhone, task: { ...task, done: true } }),
+		});
+		await getProfile();
 
 		handleError({ message: 'You have completed your task', severity: 'success' });
 	};
 
-	const deleteTask = async (task: string) => {
+	const deleteTask = async (task: Task) => {
 		await fetch(`${process.env.REACT_APP_SERVER_URL}/delete-task`, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -73,49 +84,76 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 	};
 
 	return (
-		<Container>
-			<Grid container spacing={8} justifyContent="center" padding={'64px 0'}>
-				<TasksComponent
-					dialog={dialog}
-					errors={errors}
-					control={control}
-					onSubmit={onSubmit}
-					register={register}
-					setValue={setValue}
-					tasks={tasks}
-					deleteTask={deleteTask}
-					completeTask={completeTask}
-				/>
-				<Box
+		<>
+			<Container>
+				<Grid
+					container
+					spacing={4}
 					sx={{
-						display: 'flex',
-						alignItems: 'center',
-						flexDirection: 'column',
-						justifyContent: 'space-evenly',
-						position: 'absolute',
-						top: '81px',
-						right: '50%',
-						transform: 'translateX(50%)',
+						padding: '48px 0',
+						mt: 3,
 					}}>
-					{tasks.length === 0 && <Typography mb={1}>Add your first task</Typography>}
-					<AddTaskButton
-						styles={{
-							width: '100%',
-							height: '32px',
-						}}
-						openAddDialog={openAddDialog}
+					<TasksComponent
+						dialog={dialog}
+						errors={errors}
+						control={control}
+						onSubmit={onSubmit}
+						register={register}
+						setValue={setValue}
+						tasks={allTasks}
+						deleteTask={deleteTask}
+						completeTask={completeTask}
 					/>
-				</Box>
-				<AddTaskDialog
-					dialog={dialog}
-					errors={errors}
-					control={control}
-					onSubmit={onSubmit}
-					setValue={setValue}
-					register={register}
-					closeAddDialog={closeAddDialog}
+				</Grid>
+				{completedTasks.length !== 0 && (
+					<>
+						<Divider />
+						<Typography>Completed tasks</Typography>
+					</>
+				)}
+				<Grid container spacing={4} sx={{ p: '48px 0 81px' }}>
+					<TasksComponent
+						dialog={dialog}
+						errors={errors}
+						control={control}
+						onSubmit={onSubmit}
+						register={register}
+						setValue={setValue}
+						tasks={completedTasks}
+						deleteTask={deleteTask}
+						completeTask={completeTask}
+					/>
+				</Grid>
+			</Container>
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'column',
+					justifyContent: 'space-evenly',
+					position: 'absolute',
+					top: '81px',
+					right: '50%',
+					transform: 'translateX(50%)',
+				}}>
+				{tasks.length === 0 && <Typography mb={1}>Add your first task</Typography>}
+				<AddTaskButton
+					styles={{
+						width: '100%',
+						height: '32px',
+					}}
+					openAddDialog={openAddDialog}
 				/>
-			</Grid>
-		</Container>
+			</Box>
+			<AddTaskDialog
+				dialog={dialog}
+				errors={errors}
+				control={control}
+				onSubmit={onSubmit}
+				setValue={setValue}
+				register={register}
+				closeAddDialog={closeAddDialog}
+			/>
+		</>
 	);
 });

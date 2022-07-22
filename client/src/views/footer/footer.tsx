@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Box, Container, Link, Typography } from '@mui/material';
 import { GitHub, LinkedIn } from '@mui/icons-material';
 
-export const Footer = () => {
+export const Footer: FC = () => {
 	return (
 		<Container
+			maxWidth="lg"
+			component="footer"
 			sx={{
 				display: 'flex',
 				alignItems: 'center',

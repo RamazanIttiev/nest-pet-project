@@ -35,8 +35,11 @@ export const Home: FC = () => {
 								width: '80%',
 								mt: 2,
 							}}>
-							Here you can create an account that I will be securely stored in database. Also you can add
-							your personal tasks and get notified via sms on the date and time that you have set
+							{/*Here you can create an account that I will be securely stored in database. Also, you can add*/}
+							{/*your personal tasks and get notified via sms on the date and time that you have set*/}
+							Here you can create an account that I will be securely stored in database. Also, you can add
+							your personal tasks that will be linked to your account and be accessible on any logged in
+							device
 						</Typography>
 					</Box>
 
