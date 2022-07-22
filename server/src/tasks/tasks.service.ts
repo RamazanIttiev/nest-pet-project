@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { getFirestore } from 'firebase-admin/firestore';
-import { Task } from './models/tasks.model';
+import { DoneTask, Task } from './models/tasks.model';
 
 @Injectable()
 export class TasksService {
@@ -18,6 +18,7 @@ export class TasksService {
 					const task = {
 						title: data.data().title,
 						date: data.data().date,
+						done: data.data().done,
 					};
 					tasks.push(task);
 				});
@@ -31,9 +32,20 @@ export class TasksService {
 		return await db.collection('users').doc(`${phone}`).collection('tasks').doc(`${task.title}`).set(task);
 	}
 
-	async deleteTask(phone: string, task: string) {
+	async deleteTask(phone: string, task: Task) {
 		const db = getFirestore();
 
-		return await db.collection('users').doc(`${phone}`).collection('tasks').doc(`${task}`).delete();
+		return await db.collection('users').doc(`${phone}`).collection('tasks').doc(`${task.title}`).delete();
+	}
+
+	async updateTask(phone: string, task: DoneTask) {
+		const db = getFirestore();
+
+		return await db
+			.collection('users')
+			.doc(`${phone}`)
+			.collection('tasks')
+			.doc(`${task.title}`)
+			.update({ done: true });
 	}
 }
