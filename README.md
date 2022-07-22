@@ -36,12 +36,6 @@ To start the server, go to `server` folder and run
 
 Server is on port `3001`
 
-# Deployment
-
-This project is deployed on a free hosting provider ...
-
-And can be seen at http://localhost:3000
-
 # Links
 
 `LinkedIn` https://www.linkedin.com/mwlite/in/ramazan-ittiev
