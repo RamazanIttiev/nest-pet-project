@@ -30,6 +30,7 @@ export const SignUpContainer: FC<SignUpContainerProps> = ({ handleError }) => {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
+			credentials: 'include',
 			body: JSON.stringify({ phone: formatPhoneNumber(phone), username, password }),
 		});
 	};
@@ -57,7 +58,7 @@ export const SignUpContainer: FC<SignUpContainerProps> = ({ handleError }) => {
 					});
 				}
 			})
-			.catch(() => handleError({ message: 'Something went wrong. Try to re-login', severity: 'error' }));
+			.catch(() => handleError({ message: 'Something went wrong. Try again', severity: 'error' }));
 
 		setFormData(data);
 		reset();
