@@ -24,7 +24,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 	const login = async (phone: string, password: string) => {
 		setIsLoading(true);
 
-		return await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
+		return await fetch(`http://localhost:3001/login`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

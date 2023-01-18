@@ -25,7 +25,7 @@ export const SignUpContainer: FC<SignUpContainerProps> = ({ handleError }) => {
 	const createProfile = async (phone: string, username: string, password: string) => {
 		setIsLoading(true);
 
-		return await fetch(`${process.env.REACT_APP_SERVER_URL}/register`, {
+		return await fetch(`http://localhost:3001/register`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

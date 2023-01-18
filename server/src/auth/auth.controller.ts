@@ -43,7 +43,7 @@ export class AuthController {
 			{ accessToken },
 			{
 				httpOnly: true,
-				domain: process.env.FRONTEND_DOMAIN,
+				domain: process.env.REACT_APP_CLIENT_URL,
 			},
 		);
 
@@ -54,7 +54,7 @@ export class AuthController {
 	public async logout(@Request() req: any, @Res({ passthrough: true }) response: Response) {
 		response.clearCookie('accessToken', {
 			httpOnly: true,
-			domain: process.env.FRONTEND_DOMAIN,
+			domain: process.env.REACT_APP_CLIENT_URL,
 		});
 
 		return response.get('Set-Cookie');
