@@ -28,13 +28,19 @@ export const App: FC = () => {
 		});
 		setIsLoading(false);
 
-		return data
-			.json()
-			.then(profileData => {
-				console.log(profileData);
-				setProfileData(profileData);
-			})
-			.catch(() => handleError({ message: 'Something went wrong. Try to re-login', severity: 'error' }));
+		const response = data.json();
+
+		if (data.ok) {
+			response
+				.then(profileData => {
+					setProfileData(profileData);
+				})
+				.catch(error => handleError({ message: error.message, severity: 'error' }));
+		} else {
+			response.then(res => {
+				handleError({ message: res.message, severity: 'error' });
+			});
+		}
 	}, []);
 
 	useEffect(() => {
@@ -69,14 +75,17 @@ export const App: FC = () => {
 									<CircularProgress color="inherit" />
 								</Backdrop>
 							) : (
-								<RequireAuth>
-									<TasksContainer
-										tasks={profileData.tasks}
-										userPhone={profileData.phone}
-										handleError={handleError}
-										getProfile={getProfile}
-									/>
-								</RequireAuth>
+								<RequireAuth
+									error={error.message}
+									component={
+										<TasksContainer
+											tasks={profileData.tasks}
+											userPhone={profileData.phone}
+											handleError={handleError}
+											getProfile={getProfile}
+										/>
+									}
+								/>
 							)}
 						</>
 					}

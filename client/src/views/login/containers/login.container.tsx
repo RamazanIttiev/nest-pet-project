@@ -48,7 +48,6 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 
 		loggedUser
 			.then(() => {
-				localStorage.setItem('isAuthenticated', 'true');
 				setIsLoading(false);
 				navigate('/profile');
 			})

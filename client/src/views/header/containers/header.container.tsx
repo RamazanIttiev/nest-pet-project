@@ -26,8 +26,6 @@ export const HeaderContainer: FC<HeaderContainerProps> = ({ username }) => {
 	const handleLogout = async () => {
 		setAnchorEl(null);
 
-		localStorage.removeItem('isAuthenticated');
-
 		await fetch(`${SERVER_URL}/logout`, {
 			method: 'GET',
 			credentials: 'include',

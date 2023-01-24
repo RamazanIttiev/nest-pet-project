@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-export const RequireAuth = ({ children }: { children: JSX.Element }) => {
-	let isLoggedIn = localStorage.getItem('isAuthenticated');
+interface RequireAuthProps {
+	error: string;
+	component: JSX.Element;
+}
+export const RequireAuth: FC<RequireAuthProps> = ({ error, component }) => {
 	let location = useLocation();
 
-	if (!JSON.parse(isLoggedIn)) {
+	if (error) {
 		return <Navigate to="/" state={{ from: location }} replace />;
 	}
 
-	return children;
+	return component;
 };
