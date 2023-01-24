@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { Home } from '../views/home/home';
 import { SignUpContainer } from '../views/sign-up/containers/sign-up.container';
@@ -12,6 +12,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { AlertsModel } from '../models/alerts.model';
 import { HeaderContainer } from '../views/header/containers/header.container';
 import { Footer } from '../views/footer/footer';
+import { SERVER_URL } from '../utils/helpers';
 
 export const App: FC = () => {
 	const location = useLocation();
@@ -20,34 +21,29 @@ export const App: FC = () => {
 	const [error, setError] = useState<AlertsModel>({ message: '', severity: 'success' });
 	const [profileData, setProfileData] = useState<ProfileData>({ phone: '', username: '', tasks: [] });
 
+	const getProfile = useCallback(async () => {
+		const data = await fetch(`${SERVER_URL}/profile`, {
+			method: 'GET',
+			credentials: 'include',
+		});
+		setIsLoading(false);
+
+		return data
+			.json()
+			.then(profileData => {
+				console.log(profileData);
+				setProfileData(profileData);
+			})
+			.catch(() => handleError({ message: 'Something went wrong. Try to re-login', severity: 'error' }));
+	}, []);
+
 	useEffect(() => {
 		setIsLoading(true);
 
 		if (location.pathname === '/profile') {
 			getProfile();
 		}
-	}, [location.pathname]);
-
-	const getProfile = async () => {
-		await fetch(`${process.env.REACT_APP_SERVER_URL}/profile`, {
-			method: 'GET',
-			credentials: 'include',
-		})
-			.then(response => {
-				if (response.ok) {
-					setIsLoading(false);
-					return response.json();
-				} else {
-					return setError({ message: 'Something went wrong', severity: 'error' });
-				}
-			})
-			.then(profileData => {
-				return setProfileData(profileData);
-			})
-			.catch(() => {
-				return setError({ message: 'Something went wrong. Try to re-login', severity: 'error' });
-			});
-	};
+	}, [getProfile, location.pathname]);
 
 	const handleError = (error: AlertsModel) => {
 		setError({ message: error.message, severity: error.severity });

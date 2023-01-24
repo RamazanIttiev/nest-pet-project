@@ -6,6 +6,7 @@ import { Task } from '../../../models/profile.model';
 import { AlertsModel } from '../../../models/alerts.model';
 import { AddTaskButton } from '../../../components/add-task-button';
 import { AddTaskDialog } from '../../../components/add-task-dialog';
+import { SERVER_URL } from '../../../utils/helpers';
 
 interface TasksContainerProps {
 	userPhone: string;
@@ -33,7 +34,7 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 	});
 
 	const onSubmit = handleSubmit(async (task: Task) => {
-		await fetch(`${process.env.REACT_APP_SERVER_URL}/add-task`, {
+		await fetch(`${SERVER_URL}/add-task`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -56,7 +57,7 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 	};
 
 	const completeTask = async (task: Task) => {
-		await fetch(`${process.env.REACT_APP_SERVER_URL}/update-task`, {
+		await fetch(`${SERVER_URL}/update-task`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -70,7 +71,7 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 	};
 
 	const deleteTask = async (task: Task) => {
-		await fetch(`${process.env.REACT_APP_SERVER_URL}/delete-task`, {
+		await fetch(`${SERVER_URL}/delete-task`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -138,13 +139,7 @@ export const TasksContainer: FC<TasksContainerProps> = memo(({ userPhone, tasks,
 					transform: 'translateX(50%)',
 				}}>
 				{tasks.length === 0 && <Typography mb={1}>Add your first task</Typography>}
-				<AddTaskButton
-					styles={{
-						width: '100%',
-						height: '32px',
-					}}
-					openAddDialog={openAddDialog}
-				/>
+				<AddTaskButton openAddDialog={openAddDialog} />
 			</Box>
 			<AddTaskDialog
 				dialog={dialog}

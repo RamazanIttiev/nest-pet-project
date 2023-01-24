@@ -32,7 +32,7 @@ export const Footer: FC = () => {
 				fontSize="12px"
 				target="_blank"
 				href="https://github.com/RamazanIttiev/nest-pet-project">
-				This project on Git
+				This project on GitHub
 			</Link>
 			<Box
 				sx={{

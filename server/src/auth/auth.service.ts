@@ -47,7 +47,7 @@ export class AuthService {
 	 * and generates accessToken that contains payload object
 	 */
 	async login(user: UserWithData) {
-		const payload = { phone: user.phone, username: user.username, tasks: user.tasks };
+		const payload = { phone: user.phone, username: user.username };
 
 		return this.jwtService.sign(payload, { expiresIn: this.configService.get<string>('EXPIRE_IN') });
 	}

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FormValues } from '../../../models/form.model';
 import { LoginFormComponent } from '../components/login-form.component';
 import { useNavigate } from 'react-router-dom';
-import { formatPhoneNumber } from '../../../utils/helpers';
+import { formatPhoneNumber, SERVER_URL } from '../../../utils/helpers';
 import { AlertsModel } from '../../../models/alerts.model';
 
 const defaultValues: Omit<FormValues, 'name'> = {
@@ -22,9 +22,7 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 	const [formData, setFormData] = useState(defaultValues);
 
 	const login = async (phone: string, password: string) => {
-		setIsLoading(true);
-
-		return await fetch(`http://localhost:3001/login`, {
+		const userToken = await fetch(`${SERVER_URL}/login`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -32,6 +30,8 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 			credentials: 'include',
 			body: JSON.stringify({ phone: formatPhoneNumber(phone), password }),
 		});
+
+		return userToken.json();
 	};
 
 	const {
@@ -42,22 +42,15 @@ export const LoginContainer: FC<LoginContainerProps> = ({ handleError }) => {
 	} = useForm<FormValues>({ defaultValues: formData, mode: 'onSubmit' });
 
 	const onSubmit = handleSubmit((data: Omit<FormValues, 'name'>) => {
-		login(data.phone, data.password)
-			.then(response => {
+		setIsLoading(true);
+
+		const loggedUser = login(data.phone, data.password);
+
+		loggedUser
+			.then(() => {
 				localStorage.setItem('isAuthenticated', 'true');
-
-				if (response.ok) {
-					navigate('/profile');
-					setIsLoading(false);
-
-					return response.json();
-				} else {
-					setIsLoading(false);
-
-					return response.json().then(response => {
-						handleError({ message: response.message, severity: 'error' });
-					});
-				}
+				setIsLoading(false);
+				navigate('/profile');
 			})
 			.catch(() => handleError({ message: 'Something went wrong. Try to re-login', severity: 'error' }));
 

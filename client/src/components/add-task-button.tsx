@@ -6,16 +6,9 @@ interface AddTaskButtonProps {
 	openAddDialog: () => void;
 }
 
-export const AddTaskButton: FC<AddTaskButtonProps> = ({ openAddDialog, styles }) => {
+export const AddTaskButton: FC<AddTaskButtonProps> = ({ openAddDialog }) => {
 	return (
-		<Button
-			variant="outlined"
-			sx={{
-				height: '100%',
-				fontSize: '32px',
-				...styles,
-			}}
-			onClick={openAddDialog}>
+		<Button size={'large'} variant="outlined" onClick={openAddDialog}>
 			+
 		</Button>
 	);

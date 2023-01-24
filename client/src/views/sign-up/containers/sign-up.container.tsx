@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SignUpFormComponent } from '../components/sign-up-form.component';
 import { FormValues } from '../../../models/form.model';
-import { formatPhoneNumber } from '../../../utils/helpers';
+import { formatPhoneNumber, SERVER_URL } from '../../../utils/helpers';
 import { AlertsModel } from '../../../models/alerts.model';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ export const SignUpContainer: FC<SignUpContainerProps> = ({ handleError }) => {
 	const createProfile = async (phone: string, username: string, password: string) => {
 		setIsLoading(true);
 
-		return await fetch(`http://localhost:3001/register`, {
+		return await fetch(`${SERVER_URL}/register`, {
 			headers: {
 				'Content-Type': 'application/json',
 			},

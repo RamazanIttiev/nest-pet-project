@@ -1,7 +1,7 @@
 # compiled output
 /dist
 /node_modules
-.env
+client/.env
 # Logs
 logs
 *.log
@@ -31,5 +31,3 @@ lerna-debug.log*
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
-
-firebase-adminsdk.json

@@ -3,12 +3,12 @@ import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { cert, initializeApp } from 'firebase-admin/app';
 
-import * as serviceAccount from '../firebase-adminsdk.json';
+import { CLIENT_URL } from './shared/constans';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.enableCors({
-		origin: process.env.REACT_APP_CLIENT_URL,
+		origin: CLIENT_URL,
 		credentials: true,
 	});
 	app.use(cookieParser());
@@ -18,9 +18,9 @@ async function bootstrap() {
 
 initializeApp({
 	credential: cert({
-		projectId: serviceAccount.project_id,
-		privateKey: serviceAccount.private_key,
-		clientEmail: serviceAccount.client_email,
+		projectId: process.env.PROJECT_ID,
+		privateKey: process.env.PRIVATE_KEY,
+		clientEmail: process.env.CLIENT_EMAIL,
 	}),
 });
 

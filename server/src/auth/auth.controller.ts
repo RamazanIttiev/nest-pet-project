@@ -4,6 +4,7 @@ import { NewUser, UserWithData } from '../users/models/users.model';
 import { RegistrationStatus } from './models/auth.models';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
+import { CLIENT_DOMAIN } from '../shared/constans';
 
 @Controller()
 export class AuthController {
@@ -38,14 +39,10 @@ export class AuthController {
 	): Promise<{ accessToken: string }> {
 		const accessToken = await this.authService.login(user);
 
-		response.cookie(
-			'accessToken',
-			{ accessToken },
-			{
-				httpOnly: true,
-				domain: process.env.REACT_APP_CLIENT_URL,
-			},
-		);
+		response.cookie('accessToken', accessToken, {
+			httpOnly: true,
+			domain: CLIENT_DOMAIN,
+		});
 
 		return { accessToken };
 	}
@@ -54,7 +51,7 @@ export class AuthController {
 	public async logout(@Request() req: any, @Res({ passthrough: true }) response: Response) {
 		response.clearCookie('accessToken', {
 			httpOnly: true,
-			domain: process.env.REACT_APP_CLIENT_URL,
+			domain: CLIENT_DOMAIN,
 		});
 
 		return response.get('Set-Cookie');

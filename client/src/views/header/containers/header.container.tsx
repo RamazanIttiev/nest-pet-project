@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HeaderComponent } from '../components/header.component';
+import { SERVER_URL } from '../../../utils/helpers';
 
 interface HeaderContainerProps {
 	username: string;
@@ -11,7 +12,7 @@ export const HeaderContainer: FC<HeaderContainerProps> = ({ username }) => {
 	const navigate = useNavigate();
 
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	
+
 	const isMenuOpened = Boolean(anchorEl);
 
 	const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,7 +28,7 @@ export const HeaderContainer: FC<HeaderContainerProps> = ({ username }) => {
 
 		localStorage.removeItem('isAuthenticated');
 
-		await fetch(`${process.env.REACT_APP_SERVER_URL}/logout`, {
+		await fetch(`${SERVER_URL}/logout`, {
 			method: 'GET',
 			credentials: 'include',
 		});
