@@ -7,8 +7,7 @@ interface RequireAuthProps {
 }
 export const RequireAuth: FC<RequireAuthProps> = ({ error, component }) => {
 	let location = useLocation();
-
-	if (error) {
+	if (error === 'error') {
 		return <Navigate to="/" state={{ from: location }} replace />;
 	}
 

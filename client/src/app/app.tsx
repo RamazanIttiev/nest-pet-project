@@ -76,7 +76,7 @@ export const App: FC = () => {
 								</Backdrop>
 							) : (
 								<RequireAuth
-									error={error.message}
+									error={error.severity}
 									component={
 										<TasksContainer
 											tasks={profileData.tasks}
