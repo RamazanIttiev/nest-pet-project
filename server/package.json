@@ -4,7 +4,6 @@
   "description": "",
   "author": "",
   "private": false,
-  "main": "dist/main.js",
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
@@ -42,6 +41,7 @@
     "@nestjs/cli": "8.2.6",
     "@nestjs/config": "^2.2.0",
     "@nestjs/schematics": "^8.0.0",
+    "@nestjs/serve-static": "^3.0.0",
     "@nestjs/testing": "^8.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",

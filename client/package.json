@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start:client": "react-scripts start",
-    "build": "react-scripts build",
+    "build:client": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
